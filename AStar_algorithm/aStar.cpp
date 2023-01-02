@@ -12,12 +12,25 @@ aStar::aStar()
     */
     // initialize grid
     // initialize pawns
-    std::cout << "aStar";
+    std::cout << "aStar" << std::endl;
+    bool flag = canFit(NULL, NULL);
+    std::cout << flag << std::endl;
 }
 
-bool aStar::canFit()
+bool aStar::isGoal()
 {
     return false;
+}
+
+bool aStar::canFit(stateNode* state, actionData* action)
+{
+    stateNode tempState = utils::genarateNode();
+    // generating action
+    actionData mockAction;
+    mockAction.pawnID = 6;
+    mockAction.actionTaken = 1;
+    bool result =  utils::canNodeFit(&tempState, &mockAction);
+    return result;
 }
 
 bool aStar::isNodeInClosedList()
@@ -32,27 +45,43 @@ bool aStar::isNodeInOpenList()
 
 bool aStar::isLegalAction()
 {
+    // first check if it can fit
+    // then check if its out of bounds
+    //      if OOB then check if its the main player and if main player
+    //      is in the goal state
     return false;
 }
 
 // checks if all the pawns have the same positions
 bool aStar::isSameState(stateNode* a, stateNode* b)
 {
-    std::map<int, pawn>::iterator iter;
-    int sameCount = 0;
-    for (iter = a->pawns.begin(); iter != a->pawns.end(); iter++)
+    /*stateNode node1;
+    stateNode node2;
+    std::map<int, pawn> tempPawns;
+
+    for (int i= 1; i <= 5; i++)
     {
-        pawn temp_a = iter->second;
-        pawn temp_b = b->pawns[temp_a.id];
-        // if same, increase same count
-        sameCount++;
+        tempPawns[i] = pawn(i, 1, 1, coordinates(1, 3));
     }
-    return (sameCount == a->pawns.size());
+    node1.pawns = tempPawns;
+    node2.pawns = tempPawns;*/
+
+    /*std::map<int, pawn>::iterator iter;
+    for (iter = node1.pawns.begin(); iter != node1.pawns.end(); iter++)
+    {
+        std::cout << iter->second.id << std::endl;
+    }*/
+    return utils::isSameState(a, b);
 }
 
 
 void aStar::startSearch()
 { 
+    // initialize root 
+}
+
+void aStar::searchIteration()
+{
 }
 
 void aStar::refreshGrid()
@@ -62,4 +91,9 @@ void aStar::refreshGrid()
 int aStar::evaluateState()
 {
     return 0;
+}
+
+stateNode aStar::getNextNode()
+{
+    return stateNode();
 }
