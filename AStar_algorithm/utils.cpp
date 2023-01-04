@@ -2,9 +2,7 @@
 
 bool utils::canNodeFit(stateNode* state, actionData* action)
 {
-    state->gridState.printGrid();
     refreshGrid(state);
-    state->gridState.printGrid();
     pawn current_pawn = state->pawns[action->pawnID];
     Grid grid = state->gridState;
     coordinates startPos = current_pawn.position;
@@ -71,6 +69,86 @@ bool utils::canNodeFit(stateNode* state, actionData* action)
     return true;
 }
 
+bool utils::moveForward(pawn* p, stateNode* node)
+{
+    bool mLoopFlag = true;
+    // check orientation
+    if (p->orientation == HORIZONTAL)
+    {
+        while (mLoopFlag)
+        {
+            actionData generatedAction(p->id, RIGHT);
+            if (canNodeFit(node, &generatedAction))
+            {
+                p->position.x++;
+            }
+            else
+            {
+                mLoopFlag = false;
+            }
+        }
+        return true;
+    }
+    else if (p->orientation == VERTICAL)
+    {
+        while (mLoopFlag)
+        {
+            actionData generatedAction(p->id, DOWN);
+            if (canNodeFit(node, &generatedAction))
+            {
+                p->position.y++;
+            }
+            else
+            {
+                mLoopFlag = false;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
+bool utils::moveBackward(pawn* p, stateNode* node)
+{
+    bool mLoopFlag = true;
+    // check orientation
+    if (p->orientation == HORIZONTAL)
+    {
+        while (mLoopFlag)
+        {
+            actionData generatedAction(p->id, LEFT);
+            if (canNodeFit(node, &generatedAction))
+            {
+                p->position.x--;
+            }
+            else
+            {
+                mLoopFlag = false;
+            }
+        }
+        refreshGrid(node);
+        return true;
+    }
+    else if (p->orientation == VERTICAL)
+    {
+        while (mLoopFlag)
+        {
+            actionData generatedAction(p->id, UP);
+            if (canNodeFit(node, &generatedAction))
+            {
+                p->position.y--;
+            }
+            else
+            {
+                mLoopFlag = false;
+            }
+        }
+        refreshGrid(node);
+        return true;
+    }
+    return false;
+}
+
 bool utils::isSameState(stateNode* a, stateNode* b)
 {
     std::map<int, pawn>::iterator iter;
@@ -85,6 +163,7 @@ bool utils::isSameState(stateNode* a, stateNode* b)
             sameCount++;
         }
     }
+    // if all the states are same, return true, else false
     return (sameCount == a->pawns.size());
 }
 
@@ -114,7 +193,33 @@ void utils::refreshGrid(stateNode* node)
             }
         }
     }
-    //node->gridState.printGrid();
+}
+
+int utils::getActionNum(pawn* p, int action)
+{
+    if (p->orientation == VERTICAL)
+    {
+        if (action == FORWARD)
+        {
+            return DOWN;
+        }
+        else if (action == BACKWARD)
+        {
+            return UP;
+        }
+    }
+    else if (p->orientation == HORIZONTAL)
+    {
+        if (action == FORWARD)
+        {
+            return RIGHT;
+        }
+        else if (action == BACKWARD)
+        {
+            return LEFT;
+        }
+    }
+    return -1;
 }
 
 
@@ -124,12 +229,12 @@ stateNode utils::genarateNode()
     stateNode tempState;
     // generating pawns
     std::map<int, pawn> tempPawns;
-    tempPawns[1] = pawn(1, 2, 1, coordinates(0, 2));
-    tempPawns[2] = pawn(2, 2, 1, coordinates(0, 3));
-    tempPawns[3] = pawn(3, 2, 0, coordinates(1, 4));
-    tempPawns[4] = pawn(4, 2, 1, coordinates(2, 5));
-    tempPawns[5] = pawn(5, 3, 0, coordinates(3, 2));
-    tempPawns[6] = pawn(6, 3, 0, coordinates(4, 3));
+    tempPawns[1] = pawn(1, 2, HORIZONTAL, coordinates(0, 2));
+    tempPawns[2] = pawn(2, 2, HORIZONTAL, coordinates(0, 3));
+    tempPawns[3] = pawn(3, 2, VERTICAL, coordinates(1, 4));
+    tempPawns[4] = pawn(4, 2, HORIZONTAL, coordinates(2, 5));
+    tempPawns[5] = pawn(5, 3, VERTICAL, coordinates(3, 2));
+    tempPawns[6] = pawn(6, 3, VERTICAL, coordinates(4, 3));
     // generating grid
     Grid gridState(6, 6);
     tempState.pawns = tempPawns;
@@ -143,4 +248,35 @@ stateNode utils::genarateNode()
     mockAction.pawnID = 1;
     mockAction.actionTaken = 1;
     return tempState;
+}
+
+void utils::copyNode(stateNode* node, stateNode* nodeCopy)
+{
+    actionData action;
+    // grid setup
+    Grid gridState(node->gridState.WIDTH, node->gridState.HEIGHT);
+    // setting up pawns map
+    std::map<int, pawn> pawns;
+    for (std::pair<int, pawn> pawnObj : node->pawns)
+    {
+        pawn tempPawn = pawnObj.second;
+        pawns[tempPawn.id] = pawn(
+            tempPawn.id,
+            tempPawn.size,
+            tempPawn.orientation,
+            coordinates(tempPawn.position.x, tempPawn.position.y)
+        );
+    }
+    
+
+    //stateNode tempNode(-1, -1, node, action, gridState, pawns);
+    nodeCopy->cost = -1;
+    nodeCopy->stateEvaluationValue = -1;
+    nodeCopy->parent = node;
+    nodeCopy->action = action;
+    nodeCopy->gridState = gridState;
+    nodeCopy->pawns = pawns;
+    // updating grid
+    refreshGrid(nodeCopy);
+    //return nodeCopy;
 }

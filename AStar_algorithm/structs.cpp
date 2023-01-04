@@ -2,26 +2,41 @@
 #include "map"
 #include "Grid.h"
 
-enum orientation {
-	vertical = 0,
-	horizontal = 1
-};
+// enums
+const int VERTICAL = 0;
+const int HORIZONTAL = 1;
+const int DOWN = 1;
+const int UP = -1;
+const int RIGHT = 1;
+const int LEFT = -1;
+const int FORWARD = 11;
+const int BACKWARD = -11;
 
+// structs
 struct coordinates {
 	int x;
 	int y;
 
-	coordinates() : x(-1), y(-1)
+	coordinates() 
+		: x(-1), y(-1)
 	{}
 
-	coordinates(int _x, int _y) :
-		x(_x), y(_y)
+	coordinates(int _x, int _y) 
+		: x(_x), y(_y)
 	{}
 };
 
 struct actionData {
 	int pawnID;
 	int actionTaken;
+
+	actionData()
+		: pawnID(-1), actionTaken(-1)
+	{}
+
+	actionData(int id, int action) 
+		: pawnID(id), actionTaken(action)
+	{}
 };
 
 struct pawn {
@@ -30,12 +45,12 @@ struct pawn {
 	int orientation;
 	coordinates position; // grid position
 
-	pawn() :
-		id(-1), size(-1), orientation(-1), position(coordinates(0, 0))
+	pawn() 
+		: id(-1), size(-1), orientation(-1), position(coordinates(0, 0))
 	{}
 
-	pawn(int _id, int _size, int _orientation, coordinates _position) :
-		id(_id), size(_size), orientation(_orientation), position(_position)
+	pawn(int _id, int _size, int _orientation, coordinates _position) 
+		: id(_id), size(_size), orientation(_orientation), position(_position)
 	{}
 };
 
@@ -46,4 +61,12 @@ struct stateNode {
 	actionData action; // action that spawned this node
 	Grid gridState; // state representation
 	std::map<int, pawn> pawns; // pawns map
+
+	stateNode()
+		//: cost(-1), stateEvaluationValue(-1), parent(NULL), action(NULL), gridState(NULL), pawns(NULL)
+	{}
+
+	stateNode(int c, int eval, stateNode* node, actionData parentAction, Grid g, std::map<int, pawn> pawnMap)
+		: cost(c), stateEvaluationValue(eval), parent(node), action(parentAction), gridState(g), pawns(pawnMap)
+	{}
 };

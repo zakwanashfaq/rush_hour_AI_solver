@@ -12,25 +12,23 @@ aStar::aStar()
     */
     // initialize grid
     // initialize pawns
-    std::cout << "aStar" << std::endl;
+    /*std::cout << "aStar" << std::endl;
     bool flag = canFit(NULL, NULL);
-    std::cout << flag << std::endl;
+    std::cout << flag << std::endl;*/
 }
 
-bool aStar::isGoal()
+bool aStar::isGoal(stateNode* node)
 {
+    if (node->pawns[1].position.x == 4)
+    {
+        return true;
+    }
     return false;
 }
 
 bool aStar::canFit(stateNode* state, actionData* action)
 {
-    stateNode tempState = utils::genarateNode();
-    // generating action
-    actionData mockAction;
-    mockAction.pawnID = 6;
-    mockAction.actionTaken = 1;
-    bool result =  utils::canNodeFit(&tempState, &mockAction);
-    return result;
+    return utils::canNodeFit(state, action);
 }
 
 bool aStar::isNodeInClosedList()
@@ -77,23 +75,77 @@ bool aStar::isSameState(stateNode* a, stateNode* b)
 
 void aStar::startSearch()
 { 
-    // initialize root 
+    // initialize start variables 
+    inProgress = true;
+    depth = 0;
+    // initialize root
+    stateNode root = utils::genarateNode();
+    root.parent = NULL;
+    root.cost = 0;
+    root.stateEvaluationValue = 0;
+    // add to openList
+    addToOpenList(&root);
+    // start searh
+    searchIteration();
 }
 
 void aStar::searchIteration()
 {
+    while (inProgress)
+    {
+        stateNode* currentNode = getNextNode(); // not working
+        closedList.push_back(currentNode);
+        depth++;
+
+        // checking if goal is reached
+        if (isGoal(currentNode))
+        {
+            inProgress = false; 
+            return;
+        }
+
+        for (std::pair<int, pawn> pawnObj : currentNode->pawns)
+        {
+            // forward move
+            // a copy of currentNode, and altered to form new node
+            stateNode newForwardNode;  
+            utils::copyNode(currentNode, &newForwardNode);
+            utils::moveForward(&newForwardNode.pawns[pawnObj.second.id], &newForwardNode);
+            addToOpenList(&newForwardNode);
+            //currentNode->gridState.printGrid();
+            //newForwardNode.gridState.printGrid();
+            //std::cout << "######################################" << std::endl;
+
+
+            //move pawn backward
+            // a copy of currentNode, and altered to form new node
+            stateNode newBackwardNode; 
+            utils::copyNode(currentNode, &newBackwardNode);
+            utils::moveBackward(&newBackwardNode.pawns[pawnObj.second.id], &newBackwardNode);
+            addToOpenList(&newBackwardNode);
+            /*currentNode->gridState.printGrid();
+            newBackwardNode.gridState.printGrid();
+            std::cout << "######################################" << std::endl;*/
+        }
+    }
 }
 
-void aStar::refreshGrid()
+void aStar::addToOpenList(stateNode* node)
 {
+    // todo: check if it already exists in closedList
+    // todo: check if it already exists in openList
+    openList.push_back(node);
 }
 
 int aStar::evaluateState()
 {
-    return 0;
+    return depth;
 }
 
-stateNode aStar::getNextNode()
+stateNode* aStar::getNextNode()
 {
-    return stateNode();
+    stateNode* tempHold = openList[0];
+    openList.erase(openList.begin());
+    // make sure node is removed from list
+    return tempHold;
 }

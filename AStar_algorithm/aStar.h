@@ -11,25 +11,27 @@ class aStar
 	
 	
 public:
-	std::vector<stateNode> openList; // not sorted
-	std::vector<stateNode> closedList;
+	std::vector<stateNode*> openList; // not sorted
+	std::vector<stateNode*> closedList;
 	aStar();
-	
+
+	void startSearch();
+
 private:
 	stateNode root;
-	bool inProgress;
 	coordinates goal;
+	bool inProgress;
+	int depth;
 
-	bool isGoal();
+	bool isGoal(stateNode* node);
 	bool canFit(stateNode* state, actionData* action);
 	bool isNodeInClosedList();
 	bool isNodeInOpenList();
 	bool isLegalAction();
 	bool isSameState(stateNode* a, stateNode* b);
-	void startSearch();
 	void searchIteration();
-	void refreshGrid();
+	void addToOpenList(stateNode* node);
 	int  evaluateState(); // this is the heuristic function
-	stateNode getNextNode(); // gets next node from openList;
+	stateNode* getNextNode(); // gets next node from openList;
 
 };
