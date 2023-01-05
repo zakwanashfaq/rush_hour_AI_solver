@@ -101,51 +101,96 @@ void aStar::searchIteration()
         if (isGoal(currentNode))
         {
             inProgress = false; 
+            currentNode->gridState.printGrid();
+
+            stateNode* tempNode = currentNode;
+            while (tempNode->parent != NULL)
+            {
+                std::cout << currentNode->action.pawnID << ", ";
+                std::cout << currentNode->action.actionTaken << std::endl;
+                tempNode = tempNode->parent;
+            }
+            
             return;
+        }
+
+        if (depth == 10000)
+        {
+            std::cout << "Limit!";
         }
 
         for (std::pair<int, pawn> pawnObj : currentNode->pawns)
         {
+            pawn currentPawn = pawnObj.second;
             // forward move
             // a copy of currentNode, and altered to form new node
-            stateNode newForwardNode;  
-            utils::copyNode(currentNode, &newForwardNode);
-            utils::moveForward(&newForwardNode.pawns[pawnObj.second.id], &newForwardNode);
-            addToOpenList(&newForwardNode);
-            //currentNode->gridState.printGrid();
+            stateNode* newForwardNode = utils::copyNode(currentNode);
+            utils::moveForward(&newForwardNode->pawns[currentPawn.id], newForwardNode);
+            // todo: score node and save value to state
+            newForwardNode->action.pawnID = currentPawn.id;
+            newForwardNode->action.actionTaken = FORWARD;
+            newForwardNode->cost = depth;
+            newForwardNode->stateEvaluationValue = depth;
+            addToOpenList(newForwardNode);
             //newForwardNode.gridState.printGrid();
-            //std::cout << "######################################" << std::endl;
 
 
             //move pawn backward
             // a copy of currentNode, and altered to form new node
-            stateNode newBackwardNode; 
-            utils::copyNode(currentNode, &newBackwardNode);
-            utils::moveBackward(&newBackwardNode.pawns[pawnObj.second.id], &newBackwardNode);
-            addToOpenList(&newBackwardNode);
-            /*currentNode->gridState.printGrid();
-            newBackwardNode.gridState.printGrid();
-            std::cout << "######################################" << std::endl;*/
+            stateNode* newBackwardNode = utils::copyNode(currentNode);
+            utils::moveBackward(&newBackwardNode->pawns[pawnObj.second.id], newBackwardNode);
+            // todo: score node and save value to state
+            newBackwardNode->action.pawnID = currentPawn.id;
+            newBackwardNode->action.actionTaken = BACKWARD;
+            newBackwardNode->cost = depth;
+            newBackwardNode->stateEvaluationValue = depth;
+            addToOpenList(newBackwardNode);
+            // newBackwardNode.gridState.printGrid();
         }
     }
 }
 
 void aStar::addToOpenList(stateNode* node)
 {
-    // todo: check if it already exists in closedList
-    // todo: check if it already exists in openList
+    // check if it already exists in closedList
+    for (stateNode* cNode: closedList)
+    {
+        if (isSameState(cNode, node))
+        {
+            return;
+        }
+    }
+
+    // check if it already exists in openList, if it does check if cost is lower
+    for (stateNode* oNode : openList)
+    {
+        // if cost is lower replace with the node
+        if (isSameState(oNode, node))
+        {
+            if (oNode->cost < node->cost)
+            {
+                oNode = node;
+            }
+            return;
+        }
+    }
+
     openList.push_back(node);
 }
 
 int aStar::evaluateState()
 {
+    // todo: implement evaluateState
     return depth;
 }
 
 stateNode* aStar::getNextNode()
 {
+    // todo: get node with lowest cost
     stateNode* tempHold = openList[0];
+
+    // remove node from the list
     openList.erase(openList.begin());
-    // make sure node is removed from list
+
     return tempHold;
 }

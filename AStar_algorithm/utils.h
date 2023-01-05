@@ -12,7 +12,7 @@ namespace utils {
 	void refreshGrid(stateNode* node);
 	int getActionNum(pawn* p, int action);
 	stateNode genarateNode();
-	void copyNode(stateNode* node, stateNode* nodeCopy);
+	stateNode * copyNode(stateNode* node);
 	// params are probalby wrong/unnecessary 
 	int  evaluateState(std::vector <std::vector<int>>* gridState); // this is the heuristic function
 };

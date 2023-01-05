@@ -11,14 +11,13 @@ class aStar
 	
 	
 public:
-	std::vector<stateNode*> openList; // not sorted
-	std::vector<stateNode*> closedList;
 	aStar();
 
 	void startSearch();
 
 private:
-	stateNode root;
+	std::vector<stateNode*> openList; // not sorted
+	std::vector<stateNode*> closedList;
 	coordinates goal;
 	bool inProgress;
 	int depth;

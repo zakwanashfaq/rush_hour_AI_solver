@@ -250,7 +250,7 @@ stateNode utils::genarateNode()
     return tempState;
 }
 
-void utils::copyNode(stateNode* node, stateNode* nodeCopy)
+stateNode * utils::copyNode(stateNode* node)
 {
     actionData action;
     // grid setup
@@ -267,16 +267,18 @@ void utils::copyNode(stateNode* node, stateNode* nodeCopy)
             coordinates(tempPawn.position.x, tempPawn.position.y)
         );
     }
-    
+    stateNode* copiedNode = new stateNode(
+        -1,
+        -1,
+        node,
+        action,
+        gridState,
+        pawns
+    );
 
-    //stateNode tempNode(-1, -1, node, action, gridState, pawns);
-    nodeCopy->cost = -1;
-    nodeCopy->stateEvaluationValue = -1;
-    nodeCopy->parent = node;
-    nodeCopy->action = action;
-    nodeCopy->gridState = gridState;
-    nodeCopy->pawns = pawns;
+    
     // updating grid
-    refreshGrid(nodeCopy);
+    refreshGrid(copiedNode);
     //return nodeCopy;
+    return copiedNode;
 }
