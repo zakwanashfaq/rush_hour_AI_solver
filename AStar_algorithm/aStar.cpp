@@ -1,5 +1,6 @@
 #include "aStar.h"
 #include <iostream>
+#include <stack>
 
 aStar::aStar()
 {
@@ -78,6 +79,7 @@ void aStar::startSearch()
     // initialize start variables 
     inProgress = true;
     depth = 0;
+    nodesSearched = 0;
     // initialize root
     stateNode root = utils::genarateNode();
     root.parent = NULL;
@@ -85,6 +87,10 @@ void aStar::startSearch()
     root.stateEvaluationValue = 0;
     // add to openList
     addToOpenList(&root);
+    // print root
+    root.gridState.printGrid();
+    std::cout << "Initial State" << std::endl;
+    std::cout << std::endl;
     // start searh
     searchIteration();
 }
@@ -101,22 +107,41 @@ void aStar::searchIteration()
         if (isGoal(currentNode))
         {
             inProgress = false; 
-            currentNode->gridState.printGrid();
-
+            std::stack<stateNode*> resultStack;
             stateNode* tempNode = currentNode;
             while (tempNode->parent != NULL)
             {
-                std::cout << currentNode->action.pawnID << ", ";
-                std::cout << currentNode->action.actionTaken << std::endl;
+                resultStack.push(tempNode);
                 tempNode = tempNode->parent;
             }
+
+            while (!resultStack.empty())
+            {
+                stateNode* tempNodeFromStack = resultStack.top();
+                tempNodeFromStack->gridState.printGrid();
+                std::cout << tempNodeFromStack->action.pawnID << "=> ";
+                if (tempNodeFromStack->action.actionTaken == FORWARD)
+                {
+                    std::cout << "Forward" << std::endl;
+                }
+                else if (tempNodeFromStack->action.actionTaken == BACKWARD)
+                {
+                    std::cout << "Backward" << std::endl;
+                }
+                std::cout << std::endl;
+                resultStack.pop();
+            }
             
+            std::cout << "/////////////////////////////////" <<std::endl;
+            std::cout << "Nodes Searched: " << nodesSearched << std::endl;
+            std::cout << "Max depth traversed: " << depth << std::endl;
+            std::cout << "/////////////////////////////////" << std::endl;
             return;
         }
 
         if (depth == 10000)
         {
-            std::cout << "Limit!";
+            throw "Limit!";
         }
 
         for (std::pair<int, pawn> pawnObj : currentNode->pawns)
@@ -175,6 +200,7 @@ void aStar::addToOpenList(stateNode* node)
         }
     }
 
+    nodesSearched++;
     openList.push_back(node);
 }
 

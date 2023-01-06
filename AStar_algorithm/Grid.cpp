@@ -13,12 +13,12 @@ int Grid::get(int x, int y)
     // out of bounds case 
     if ((x > WIDTH - 1) || (x < 0))
     {
-        std::cout << "values are out of bounds: X" << std::endl;
+        // std::cout << "values are out of bounds: X" << std::endl;
         return -1;
     }
     else if ((y > HEIGHT - 1) || (y < 0))
     {
-        std::cout << "values are out of bounds: Y" << std::endl;
+        // std::cout << "values are out of bounds: Y" << std::endl;
         return -1;
     }
     else
