@@ -60,7 +60,7 @@ void testCases()
 int main()
 {
     //testCases();
-    aStar * searchObject = new aStar();
+    aStar * searchObject = new aStar("input.txt");
     searchObject->startSearch();
     return 1;
 }

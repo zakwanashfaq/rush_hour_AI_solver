@@ -11,10 +11,11 @@ class aStar
 	
 	
 public:
-	aStar();
+	aStar(std::string inputFileName);
 	void startSearch();
 
 private:
+	stateNode* root;
 	std::vector<stateNode*> openList; // not sorted
 	std::vector<stateNode*> closedList;
 	int nodesSearched;

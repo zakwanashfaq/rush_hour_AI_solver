@@ -1,21 +1,58 @@
 #include "aStar.h"
 #include <iostream>
+#include <fstream>
 #include <stack>
 
-aStar::aStar()
+aStar::aStar(std::string inputFileName)
 {
+    int PawnIdCount = 2;
+    std::fstream inputFile;
+    std::string temp;
+    inputFile.open(inputFileName, std::ios::in);
+    if (!inputFile) {
+        throw "File not found!";
+    }
     // initialize from input file first
+    stateNode startState;
+    std::map<int, pawn> tempPawns;
+    while (inputFile >> temp)
+    {
+        if (temp.compare("Grid") == 0) {
+            int x, y;
+            inputFile >> x;
+            inputFile >> y;
+            Grid startGrid(x, y);
+            startState.gridState = startGrid;
+        }
+        if (temp.compare("Pawn") == 0) {
+            int id, size, positionX, PositionY, orientationEnum=0;
+            std::string orientation;
+            if (orientation == "HORIZONTAL")
+            {
+                orientationEnum = HORIZONTAL;
+            }
+            else if (orientation == "VERTICAL")
+            {
+                orientationEnum = VERTICAL;
+            }
+            inputFile >> id >> size >> orientation >> positionX >> PositionY;
+            tempPawns[id] = pawn(id, size, orientationEnum, coordinates(positionX, PositionY));
+        }
+    }
+
+    utils::refreshGrid(&startState);
+    startState.cost = 0;
+    startState.action.pawnID = 0;
+    startState.action.actionTaken = 0;
+    startState.pawns = tempPawns;
+    pawn p = tempPawns[1];
+    goal.x = startState.gridState.WIDTH - p.size;
+    goal.y = p.position.y;
+    root = &startState;
     /*
     Grid gridX, gridY
-    StartPawn size orientation positionX positionY
-    Pawn size orientation positionX positionY
-    Goal gridX, gridY
+    Pawn id size orientation positionX positionY
     */
-    // initialize grid
-    // initialize pawns
-    /*std::cout << "aStar" << std::endl;
-    bool flag = canFit(NULL, NULL);
-    std::cout << flag << std::endl;*/
 }
 
 bool aStar::isGoal(stateNode* node)
