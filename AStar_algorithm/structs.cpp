@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "map"
 #include "Grid.h"
 
@@ -57,7 +58,7 @@ struct pawn {
 struct stateNode {
 	int cost; // cost to reach state
 	int stateEvaluationValue; // calculated by evaluateState
-	stateNode* parent; // parent node that spawned this node
+	std::shared_ptr<stateNode> parent; // parent node that spawned this node
 	actionData action; // action that spawned this node
 	Grid gridState; // state representation
 	std::map<int, pawn> pawns; // pawns map
@@ -66,7 +67,7 @@ struct stateNode {
 		//: cost(-1), stateEvaluationValue(-1), parent(NULL), action(NULL), gridState(NULL), pawns(NULL)
 	{}
 
-	stateNode(int c, int eval, stateNode* node, actionData parentAction, Grid g, std::map<int, pawn> pawnMap)
+	stateNode(int c, int eval, std::shared_ptr<stateNode> node, actionData parentAction, Grid g, std::map<int, pawn> pawnMap)
 		: cost(c), stateEvaluationValue(eval), parent(node), action(parentAction), gridState(g), pawns(pawnMap)
 	{}
 };

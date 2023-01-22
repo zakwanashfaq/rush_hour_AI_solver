@@ -13,16 +13,13 @@ aStar::aStar(std::string inputFileName)
         throw "File not found!";
     }
     // initialize from input file first
-    stateNode startState;
+    int x, y;
     std::map<int, pawn> tempPawns;
     while (inputFile >> temp)
     {
         if (temp.compare("Grid") == 0) {
-            int x, y;
             inputFile >> x;
             inputFile >> y;
-            Grid startGrid(x, y);
-            startState.gridState = startGrid;
         }
         if (temp.compare("Pawn") == 0) {
             int id, size, positionX, PositionY, orientationEnum=0;
@@ -40,22 +37,30 @@ aStar::aStar(std::string inputFileName)
         }
     }
 
-    utils::refreshGrid(&startState);
-    startState.cost = 0;
-    startState.action.pawnID = 0;
-    startState.action.actionTaken = 0;
-    startState.pawns = tempPawns;
+    Grid startGrid(x, y);
+    actionData a(0, 0);
+    std::shared_ptr<stateNode> startState = std::make_shared<stateNode>();
+
+    //    0,
+    //    0,
+    //    NULL,
+    //    a,
+    //    startGrid,
+    //    tempPawns
+
+    utils::refreshGrid(startState);
+
     pawn p = tempPawns[1];
-    goal.x = startState.gridState.WIDTH - p.size;
+    goal.x = startState->gridState.WIDTH - p.size;
     goal.y = p.position.y;
-    root = &startState;
+    root = startState;
     /*
     Grid gridX, gridY
     Pawn id size orientation positionX positionY
     */
 }
 
-bool aStar::isGoal(stateNode* node)
+bool aStar::isGoal(std::shared_ptr<stateNode> node)
 {
     if (node->pawns[1].position.x == 4)
     {
@@ -64,7 +69,7 @@ bool aStar::isGoal(stateNode* node)
     return false;
 }
 
-bool aStar::canFit(stateNode* state, actionData* action)
+bool aStar::canFit(std::shared_ptr<stateNode> state, actionData* action)
 {
     return utils::canNodeFit(state, action);
 }
@@ -89,7 +94,7 @@ bool aStar::isLegalAction()
 }
 
 // checks if all the pawns have the same positions
-bool aStar::isSameState(stateNode* a, stateNode* b)
+bool aStar::isSameState(std::shared_ptr<stateNode> a, std::shared_ptr<stateNode> b)
 {
     /*stateNode node1;
     stateNode node2;
@@ -118,14 +123,14 @@ void aStar::startSearch()
     depth = 0;
     nodesSearched = 0;
     // initialize root
-    stateNode root = utils::genarateNode();
-    root.parent = NULL;
-    root.cost = 0;
-    root.stateEvaluationValue = 0;
+    std::shared_ptr<stateNode> root = utils::genarateNode();
+    root->parent = NULL;
+    root->cost = 0;
+    root->stateEvaluationValue = 0;
     // add to openList
-    addToOpenList(&root);
+    addToOpenList(root);
     // print root
-    root.gridState.printGrid();
+    root->gridState.printGrid();
     std::cout << "Initial State" << std::endl;
     std::cout << std::endl;
     // start searh
@@ -136,7 +141,7 @@ void aStar::searchIteration()
 {
     while (inProgress)
     {
-        stateNode* currentNode = getNextNode(); // not working
+        std::shared_ptr<stateNode> currentNode = getNextNode(); // not working
         closedList.push_back(currentNode);
         depth++;
 
@@ -144,8 +149,8 @@ void aStar::searchIteration()
         if (isGoal(currentNode))
         {
             inProgress = false; 
-            std::stack<stateNode*> resultStack;
-            stateNode* tempNode = currentNode;
+            std::stack<std::shared_ptr<stateNode>> resultStack;
+            std::shared_ptr<stateNode> tempNode = currentNode;
             while (tempNode->parent != NULL)
             {
                 resultStack.push(tempNode);
@@ -154,7 +159,7 @@ void aStar::searchIteration()
 
             while (!resultStack.empty())
             {
-                stateNode* tempNodeFromStack = resultStack.top();
+                std::shared_ptr<stateNode> tempNodeFromStack = resultStack.top();
                 tempNodeFromStack->gridState.printGrid();
                 std::cout << tempNodeFromStack->action.pawnID << "=> ";
                 if (tempNodeFromStack->action.actionTaken == FORWARD)
@@ -186,7 +191,7 @@ void aStar::searchIteration()
             pawn currentPawn = pawnObj.second;
             // forward move
             // a copy of currentNode, and altered to form new node
-            stateNode* newForwardNode = utils::copyNode(currentNode);
+            std::shared_ptr<stateNode> newForwardNode = utils::copyNode(currentNode);
             utils::moveForward(&newForwardNode->pawns[currentPawn.id], newForwardNode);
             // todo: score node and save value to state
             newForwardNode->action.pawnID = currentPawn.id;
@@ -199,7 +204,7 @@ void aStar::searchIteration()
 
             //move pawn backward
             // a copy of currentNode, and altered to form new node
-            stateNode* newBackwardNode = utils::copyNode(currentNode);
+            std::shared_ptr<stateNode> newBackwardNode = utils::copyNode(currentNode);
             utils::moveBackward(&newBackwardNode->pawns[pawnObj.second.id], newBackwardNode);
             // todo: score node and save value to state
             newBackwardNode->action.pawnID = currentPawn.id;
@@ -212,10 +217,10 @@ void aStar::searchIteration()
     }
 }
 
-void aStar::addToOpenList(stateNode* node)
+void aStar::addToOpenList(std::shared_ptr<stateNode> node)
 {
     // check if it already exists in closedList
-    for (stateNode* cNode: closedList)
+    for (std::shared_ptr<stateNode> cNode: closedList)
     {
         if (isSameState(cNode, node))
         {
@@ -224,7 +229,7 @@ void aStar::addToOpenList(stateNode* node)
     }
 
     // check if it already exists in openList, if it does check if cost is lower
-    for (stateNode* oNode : openList)
+    for (std::shared_ptr<stateNode> oNode : openList)
     {
         // if cost is lower replace with the node
         if (isSameState(oNode, node))
@@ -247,10 +252,10 @@ int aStar::evaluateState()
     return depth;
 }
 
-stateNode* aStar::getNextNode()
+std::shared_ptr<stateNode> aStar::getNextNode()
 {
     // todo: get node with lowest cost
-    stateNode* tempHold = openList[0];
+    std::shared_ptr<stateNode> tempHold = openList[0];
 
     // remove node from the list
     openList.erase(openList.begin());

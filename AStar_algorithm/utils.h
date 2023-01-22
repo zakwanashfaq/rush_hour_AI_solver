@@ -2,17 +2,17 @@
 #include "structs.cpp"
 
 namespace utils {
-	bool canNodeFit(stateNode* state, actionData* action);
-	bool isNodeInClosedList(stateNode* node, std::vector<stateNode>* openList);
-	bool isNodeInOpenList(stateNode* node, std::vector<stateNode>* closedList);
+	bool canNodeFit(std::shared_ptr<stateNode> state, actionData* action);
+	bool isNodeInClosedList(std::shared_ptr<stateNode> node, std::vector<stateNode>* openList);
+	bool isNodeInOpenList(std::shared_ptr<stateNode> node, std::vector<stateNode>* closedList);
 	bool isLegalAction();
-	bool moveForward(pawn* p, stateNode* node);
-	bool moveBackward(pawn* p, stateNode* node);
-	bool isSameState(stateNode* a, stateNode* b);
-	void refreshGrid(stateNode* node);
+	bool moveForward(pawn* p, std::shared_ptr<stateNode> node);
+	bool moveBackward(pawn* p, std::shared_ptr<stateNode> node);
+	bool isSameState(std::shared_ptr<stateNode> a, std::shared_ptr<stateNode> b);
+	void refreshGrid(std::shared_ptr<stateNode> node);
 	int getActionNum(pawn* p, int action);
-	stateNode genarateNode();
-	stateNode * copyNode(stateNode* node);
+	std::shared_ptr<stateNode> genarateNode();
+	std::shared_ptr<stateNode> copyNode(std::shared_ptr<stateNode> node);
 	// params are probalby wrong/unnecessary 
 	int  evaluateState(std::vector <std::vector<int>>* gridState); // this is the heuristic function
 };

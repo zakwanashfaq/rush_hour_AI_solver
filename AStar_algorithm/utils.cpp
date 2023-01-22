@@ -1,6 +1,6 @@
 #include "utils.h"
 
-bool utils::canNodeFit(stateNode* state, actionData* action)
+bool utils::canNodeFit(std::shared_ptr<stateNode> state, actionData* action)
 {
     refreshGrid(state);
     pawn current_pawn = state->pawns[action->pawnID];
@@ -69,7 +69,7 @@ bool utils::canNodeFit(stateNode* state, actionData* action)
     return true;
 }
 
-bool utils::moveForward(pawn* p, stateNode* node)
+bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
 {
     bool mLoopFlag = true;
     // check orientation
@@ -108,7 +108,7 @@ bool utils::moveForward(pawn* p, stateNode* node)
     return false;
 }
 
-bool utils::moveBackward(pawn* p, stateNode* node)
+bool utils::moveBackward(pawn* p, std::shared_ptr<stateNode> node)
 {
     bool mLoopFlag = true;
     // check orientation
@@ -149,7 +149,7 @@ bool utils::moveBackward(pawn* p, stateNode* node)
     return false;
 }
 
-bool utils::isSameState(stateNode* a, stateNode* b)
+bool utils::isSameState(std::shared_ptr<stateNode> a, std::shared_ptr<stateNode> b)
 {
     std::map<int, pawn>::iterator iter;
     int sameCount = 0;
@@ -167,7 +167,7 @@ bool utils::isSameState(stateNode* a, stateNode* b)
     return (sameCount == a->pawns.size());
 }
 
-void utils::refreshGrid(stateNode* node)
+void utils::refreshGrid(std::shared_ptr<stateNode> node)
 {
     // initializing new grid
     node->gridState.clearGrid();
@@ -224,9 +224,9 @@ int utils::getActionNum(pawn* p, int action)
 
 
 
-stateNode utils::genarateNode()
+std::shared_ptr<stateNode> utils::genarateNode()
 {
-    stateNode tempState;
+    std::shared_ptr<stateNode> tempState = std::make_shared<stateNode>();
     // generating pawns
     std::map<int, pawn> tempPawns;
     tempPawns[1] = pawn(1, 2, HORIZONTAL, coordinates(0, 2));
@@ -237,11 +237,11 @@ stateNode utils::genarateNode()
     tempPawns[6] = pawn(6, 3, VERTICAL, coordinates(4, 3));
     // generating grid
     Grid gridState(6, 6);
-    tempState.pawns = tempPawns;
-    tempState.gridState = gridState;
+    tempState->pawns = tempPawns;
+    tempState->gridState = gridState;
     //tempState.gridState.printGrid();
     // updating grid with pawns
-    refreshGrid(&tempState);
+    refreshGrid(tempState);
     //tempState.gridState.printGrid();
     // generating action
     actionData mockAction;
@@ -250,7 +250,7 @@ stateNode utils::genarateNode()
     return tempState;
 }
 
-stateNode * utils::copyNode(stateNode* node)
+std::shared_ptr<stateNode> utils::copyNode(std::shared_ptr<stateNode> node)
 {
     actionData action;
     // grid setup
@@ -267,7 +267,7 @@ stateNode * utils::copyNode(stateNode* node)
             coordinates(tempPawn.position.x, tempPawn.position.y)
         );
     }
-    stateNode* copiedNode = new stateNode(
+    std::shared_ptr<stateNode> copiedNode = std::make_shared<stateNode>(
         -1,
         -1,
         node,

@@ -15,23 +15,23 @@ public:
 	void startSearch();
 
 private:
-	stateNode* root;
-	std::vector<stateNode*> openList; // not sorted
-	std::vector<stateNode*> closedList;
+	std::shared_ptr<stateNode> root;
+	std::vector<std::shared_ptr<stateNode>> openList; // not sorted
+	std::vector<std::shared_ptr<stateNode>> closedList;
 	int nodesSearched;
 	coordinates goal;
 	bool inProgress;
 	int depth;
 
-	bool isGoal(stateNode* node);
-	bool canFit(stateNode* state, actionData* action);
+	bool isGoal(std::shared_ptr<stateNode> node);
+	bool canFit(std::shared_ptr<stateNode> state, actionData* action);
 	bool isNodeInClosedList();
 	bool isNodeInOpenList();
 	bool isLegalAction();
-	bool isSameState(stateNode* a, stateNode* b);
+	bool isSameState(std::shared_ptr<stateNode> a, std::shared_ptr<stateNode> b);
 	void searchIteration();
-	void addToOpenList(stateNode* node);
+	void addToOpenList(std::shared_ptr<stateNode> node);
 	int  evaluateState(); // this is the heuristic function
-	stateNode* getNextNode(); // gets next node from openList;
+	std::shared_ptr<stateNode> getNextNode(); // gets next node from openList;
 
 };
