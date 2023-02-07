@@ -5,6 +5,11 @@
 
 aStar::aStar(std::string inputFileName)
 {
+    /* Schema for input file
+    Grid gridX, gridY
+    Pawn id size orientation positionX positionY
+    */
+
     int PawnIdCount = 2;
     std::fstream inputFile;
     std::string temp;
@@ -22,8 +27,9 @@ aStar::aStar(std::string inputFileName)
             inputFile >> y;
         }
         if (temp.compare("Pawn") == 0) {
-            int id, size, positionX, PositionY, orientationEnum=0;
+            int id, size, positionX, PositionY, orientationEnum=-1;
             std::string orientation;
+            inputFile >> id >> size >> orientation >> positionX >> PositionY;
             if (orientation == "HORIZONTAL")
             {
                 orientationEnum = HORIZONTAL;
@@ -32,32 +38,23 @@ aStar::aStar(std::string inputFileName)
             {
                 orientationEnum = VERTICAL;
             }
-            inputFile >> id >> size >> orientation >> positionX >> PositionY;
             tempPawns[id] = pawn(id, size, orientationEnum, coordinates(positionX, PositionY));
         }
     }
 
-    Grid * startGrid = new Grid(6, 6);
+    std::shared_ptr<Grid> startGrid = std::make_shared<Grid>(x, y);
     actionData a(0, 0);
-    std::shared_ptr<stateNode> startState = std::make_shared<stateNode>();
 
-    ////    0,
-    ////    0,
-    ////    NULL,
-    ////    a,
-    ////    startGrid,
-    ////    tempPawns
+    
+    root = utils::genarateNode();
+    root->cost = 0;
+    root->stateEvaluationValue = 0;
+    root->parent = NULL;
+    root->action = a;
+    root->gridState = startGrid;
+    root->pawns = tempPawns;
 
-    // utils::refreshGrid(startState);
-
-    //pawn p = tempPawns[1];
-    //goal.x = startState->gridState->WIDTH - p.size;
-    //goal.y = p.position.y;
-    root = utils::genarateNode();;
-    /*
-    Grid gridX, gridY
-    Pawn id size orientation positionX positionY
-    */
+    
 }
 
 bool aStar::isGoal(std::shared_ptr<stateNode> node)
