@@ -37,22 +37,22 @@ aStar::aStar(std::string inputFileName)
         }
     }
 
-    Grid * startGrid = new Grid(x, y);
+    Grid * startGrid = new Grid(6, 6);
     actionData a(0, 0);
     std::shared_ptr<stateNode> startState = std::make_shared<stateNode>();
 
-    //    0,
-    //    0,
-    //    NULL,
-    //    a,
-    //    startGrid,
-    //    tempPawns
+    ////    0,
+    ////    0,
+    ////    NULL,
+    ////    a,
+    ////    startGrid,
+    ////    tempPawns
 
-    utils::refreshGrid(startState);
+    // utils::refreshGrid(startState);
 
-    pawn p = tempPawns[1];
-    goal.x = startState->gridState.WIDTH - p.size;
-    goal.y = p.position.y;
+    //pawn p = tempPawns[1];
+    //goal.x = startState->gridState->WIDTH - p.size;
+    //goal.y = p.position.y;
     root = utils::genarateNode();;
     /*
     Grid gridX, gridY
@@ -160,7 +160,7 @@ void aStar::searchIteration()
             while (!resultStack.empty())
             {
                 std::shared_ptr<stateNode> tempNodeFromStack = resultStack.top();
-                tempNodeFromStack->gridState.printGrid();
+                tempNodeFromStack->gridState->printGrid();
                 std::cout << tempNodeFromStack->action.pawnID << "=> ";
                 if (tempNodeFromStack->action.actionTaken == FORWARD)
                 {

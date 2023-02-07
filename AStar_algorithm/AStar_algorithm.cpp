@@ -25,18 +25,18 @@
 void testCanMoveVertically()
 {
     std::shared_ptr<stateNode> tempState = utils::genarateNode();
-    tempState->gridState.printGrid();
+    tempState->gridState->printGrid();
     // generating action
     utils::moveForward(&tempState->pawns[4], tempState);
-    tempState->gridState.printGrid();
+    tempState->gridState->printGrid();
     utils::moveBackward(&tempState->pawns[5], tempState);
-    tempState->gridState.printGrid();
+    tempState->gridState->printGrid();
     utils::moveBackward(&tempState->pawns[6], tempState);
-    tempState->gridState.printGrid();
+    tempState->gridState->printGrid();
     utils::moveForward(&tempState->pawns[4], tempState);
-    tempState->gridState.printGrid();
+    tempState->gridState->printGrid();
     utils::moveForward(&tempState->pawns[2], tempState);
-    tempState->gridState.printGrid();
+    tempState->gridState->printGrid();
     // check final state
     // check to see if the pawns in the corect state
     /* 
