@@ -40,6 +40,12 @@ aStar::aStar(std::string inputFileName)
             }
             tempPawns[id] = pawn(id, size, orientationEnum, coordinates(positionX, PositionY));
         }
+        if (temp.compare("Goal") == 0) {
+            int gx, gy;
+            inputFile >> gx >> gy;
+            goal.x = gx;
+            goal.y = gy;
+        }
     }
 
     std::shared_ptr<Grid> startGrid = std::make_shared<Grid>(x, y);
@@ -59,9 +65,12 @@ aStar::aStar(std::string inputFileName)
 
 bool aStar::isGoal(std::shared_ptr<stateNode> node)
 {
-    if (node->pawns[1].position.x == 4)
+    if (node->pawns[1].position.x == goal.x)
     {
-        return true;
+        if (node->pawns[1].position.y == goal.y)
+        {
+            return true;
+        }
     }
     return false;
 }
@@ -120,17 +129,11 @@ void aStar::startSearch()
     depth = 0;
     nodesSearched = 0;
     // initialize root
-    //std::shared_ptr<stateNode> root = utils::genarateNode();
-    //root->parent = NULL;
-    //root->cost = 0;
-    //root->stateEvaluationValue = 0;
-    // add to openList
     addToOpenList(root);
-    // print root
-    //root->gridState.printGrid();
-    //std::cout << "Initial State" << std::endl;
-    //std::cout << std::endl;
-    // start searh
+    // refresh grid then print root state
+    utils::refreshGrid(root);
+    root->gridState->printGrid();
+    // start search
     searchIteration();
 }
 
@@ -180,7 +183,7 @@ void aStar::searchIteration()
 
         if (depth == 10000)
         {
-            throw "Limit!";
+            throw "Max allowed depth reached!\n";
         }
 
         for (std::pair<int, pawn> pawnObj : currentNode->pawns)
