@@ -37,7 +37,7 @@ aStar::aStar(std::string inputFileName)
         }
     }
 
-    Grid startGrid(x, y);
+    Grid * startGrid = new Grid(x, y);
     actionData a(0, 0);
     std::shared_ptr<stateNode> startState = std::make_shared<stateNode>();
 
@@ -53,7 +53,7 @@ aStar::aStar(std::string inputFileName)
     pawn p = tempPawns[1];
     goal.x = startState->gridState.WIDTH - p.size;
     goal.y = p.position.y;
-    root = startState;
+    root = utils::genarateNode();;
     /*
     Grid gridX, gridY
     Pawn id size orientation positionX positionY
@@ -123,16 +123,16 @@ void aStar::startSearch()
     depth = 0;
     nodesSearched = 0;
     // initialize root
-    std::shared_ptr<stateNode> root = utils::genarateNode();
-    root->parent = NULL;
-    root->cost = 0;
-    root->stateEvaluationValue = 0;
+    //std::shared_ptr<stateNode> root = utils::genarateNode();
+    //root->parent = NULL;
+    //root->cost = 0;
+    //root->stateEvaluationValue = 0;
     // add to openList
     addToOpenList(root);
     // print root
-    root->gridState.printGrid();
-    std::cout << "Initial State" << std::endl;
-    std::cout << std::endl;
+    //root->gridState.printGrid();
+    //std::cout << "Initial State" << std::endl;
+    //std::cout << std::endl;
     // start searh
     searchIteration();
 }
