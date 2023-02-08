@@ -62,6 +62,7 @@ struct stateNode {
 	actionData action; // action that spawned this node
 	std::shared_ptr<Grid> gridState; // state representation
 	std::map<int, pawn> pawns; // pawns map
+	coordinates player;
 
 	stateNode()
 		//: cost(-1), stateEvaluationValue(-1), parent(NULL), action(NULL), gridState(NULL), pawns(NULL)

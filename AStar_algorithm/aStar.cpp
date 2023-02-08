@@ -19,6 +19,7 @@ aStar::aStar(std::string inputFileName)
     }
     // initialize from input file first
     int x, y;
+    coordinates player;
     std::map<int, pawn> tempPawns;
     while (inputFile >> temp)
     {
@@ -46,6 +47,12 @@ aStar::aStar(std::string inputFileName)
             goal.x = gx;
             goal.y = gy;
         }
+        if (temp.compare("Player") == 0) {
+            int px, py;
+            inputFile >> px >> py;
+            player.x = px;
+            player.y = py;
+        }
     }
 
     std::shared_ptr<Grid> startGrid = std::make_shared<Grid>(x, y);
@@ -59,6 +66,7 @@ aStar::aStar(std::string inputFileName)
     root->action = a;
     root->gridState = startGrid;
     root->pawns = tempPawns;
+    root->player = player;
 
     
 }
@@ -102,22 +110,6 @@ bool aStar::isLegalAction()
 // checks if all the pawns have the same positions
 bool aStar::isSameState(std::shared_ptr<stateNode> a, std::shared_ptr<stateNode> b)
 {
-    /*stateNode node1;
-    stateNode node2;
-    std::map<int, pawn> tempPawns;
-
-    for (int i= 1; i <= 5; i++)
-    {
-        tempPawns[i] = pawn(i, 1, 1, coordinates(1, 3));
-    }
-    node1.pawns = tempPawns;
-    node2.pawns = tempPawns;*/
-
-    /*std::map<int, pawn>::iterator iter;
-    for (iter = node1.pawns.begin(); iter != node1.pawns.end(); iter++)
-    {
-        std::cout << iter->second.id << std::endl;
-    }*/
     return utils::isSameState(a, b);
 }
 
@@ -142,6 +134,12 @@ void aStar::searchIteration()
     while (inProgress)
     {
         std::shared_ptr<stateNode> currentNode = getNextNode(); // not working
+        if (!currentNode)
+        {
+            inProgress = false; 
+            std::cout << "This problem is not solvable. Check input parameters.";
+            return;
+        }
         closedList.push_back(currentNode);
         depth++;
 
@@ -183,6 +181,7 @@ void aStar::searchIteration()
 
         if (depth == 10000)
         {
+            std::cout << "Max allowed depth reached!\n";
             throw "Max allowed depth reached!\n";
         }
 
@@ -254,6 +253,10 @@ int aStar::evaluateState()
 
 std::shared_ptr<stateNode> aStar::getNextNode()
 {
+    if (openList.size() == 0)
+    {
+        return NULL;
+    }
     // todo: get node with lowest cost
     std::shared_ptr<stateNode> tempHold = openList[0];
 
