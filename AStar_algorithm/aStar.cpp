@@ -28,9 +28,9 @@ aStar::aStar(std::string inputFileName)
             inputFile >> y;
         }
         if (temp.compare("Pawn") == 0) {
-            int id, size, positionX, PositionY, orientationEnum=-1;
+            int size, positionX, PositionY, orientationEnum=-1;
             std::string orientation;
-            inputFile >> id >> size >> orientation >> positionX >> PositionY;
+            inputFile >> size >> orientation >> positionX >> PositionY;
             if (orientation == "HORIZONTAL")
             {
                 orientationEnum = HORIZONTAL;
@@ -39,7 +39,8 @@ aStar::aStar(std::string inputFileName)
             {
                 orientationEnum = VERTICAL;
             }
-            tempPawns[id] = pawn(id, size, orientationEnum, coordinates(positionX, PositionY));
+            tempPawns[PawnIdCount] = pawn(PawnIdCount, size, orientationEnum, coordinates(positionX, PositionY));
+            PawnIdCount++;
         }
         if (temp.compare("Goal") == 0) {
             int gx, gy;
@@ -48,10 +49,23 @@ aStar::aStar(std::string inputFileName)
             goal.y = gy;
         }
         if (temp.compare("Player") == 0) {
-            int px, py;
+            int size, positionX, PositionY, orientationEnum = -1;
+            std::string orientation;
+            inputFile >> size >> orientation >> positionX >> PositionY;
+            if (orientation == "HORIZONTAL")
+            {
+                orientationEnum = HORIZONTAL;
+            }
+            else if (orientation == "VERTICAL")
+            {
+                orientationEnum = VERTICAL;
+            }
+            tempPawns[1] = pawn(1, size, orientationEnum, coordinates(positionX, PositionY));
+
+            /*int px, py;
             inputFile >> px >> py;
             player.x = px;
-            player.y = py;
+            player.y = py;*/
         }
     }
 
@@ -67,8 +81,6 @@ aStar::aStar(std::string inputFileName)
     root->gridState = startGrid;
     root->pawns = tempPawns;
     root->player = player;
-
-    
 }
 
 bool aStar::isGoal(std::shared_ptr<stateNode> node)
