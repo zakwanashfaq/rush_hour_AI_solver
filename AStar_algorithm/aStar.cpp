@@ -19,7 +19,7 @@ aStar::aStar(std::string inputFileName)
     }
     // initialize from input file first
     int x, y;
-    coordinates player;
+    
     std::map<int, pawn> tempPawns;
     while (inputFile >> temp)
     {
@@ -60,12 +60,12 @@ aStar::aStar(std::string inputFileName)
             {
                 orientationEnum = VERTICAL;
             }
-            tempPawns[1] = pawn(1, size, orientationEnum, coordinates(positionX, PositionY));
+            // tempPawns[1] = pawn(1, size, orientationEnum, coordinates(positionX, PositionY));
 
             /*int px, py;
-            inputFile >> px >> py;
-            player.x = px;
-            player.y = py;*/
+            inputFile >> px >> py;*/
+            player.x = positionX;
+            player.y = PositionY;
         }
     }
 
@@ -180,6 +180,23 @@ void aStar::searchIteration()
                 {
                     std::cout << "Backward" << std::endl;
                 }
+                else if (tempNodeFromStack->action.actionTaken == LEFT)
+                {
+                    std::cout << "LEFT" << std::endl;
+                }
+                else if (tempNodeFromStack->action.actionTaken == RIGHT)
+                {
+                    std::cout << "RIGHT" << std::endl;
+                }
+                else if (tempNodeFromStack->action.actionTaken == UP)
+                {
+                    std::cout << "UP" << std::endl;
+                }
+                else if (tempNodeFromStack->action.actionTaken == DOWN)
+                {
+                    std::cout << "DOWN" << std::endl;
+                }
+
                 std::cout << std::endl;
                 resultStack.pop();
             }
@@ -197,6 +214,59 @@ void aStar::searchIteration()
             throw "Max allowed depth reached!\n";
         }
 
+        // (todo) player moves here
+        std::shared_ptr<stateNode> playerUpNode = utils::copyNode(currentNode);
+        bool willMoveUp = false; // utils::movePlayerLeft(playerUpNode);
+
+        std::shared_ptr<stateNode> playerDownNode = utils::copyNode(currentNode);
+        bool willMoveDown = false; //utils::movePlayerLeft(playerDownNode);
+
+        std::shared_ptr<stateNode> playerLeftNode = utils::copyNode(currentNode);
+        bool willMoveLeft = utils::movePlayerLeft(playerLeftNode);
+
+        std::shared_ptr<stateNode> playerRightNode = utils::copyNode(currentNode);
+        bool willMoveRight = false; //utils::movePlayerLeft(playerRightNode);
+
+        if (willMoveUp)
+        {
+            playerUpNode->action.pawnID = 1;
+            playerUpNode->action.actionTaken = UP;
+            playerUpNode->cost = depth;
+            playerUpNode->stateEvaluationValue = depth;
+            // playerUpNode->gridState->printGrid();
+            addToOpenList(playerUpNode);
+        }
+
+        if (willMoveDown)
+        {
+            playerDownNode->action.pawnID = 1;
+            playerDownNode->action.actionTaken = DOWN;
+            playerDownNode->cost = depth;
+            playerDownNode->stateEvaluationValue = depth;
+            // playerDownNode->gridState->printGrid();
+            addToOpenList(playerDownNode);
+        }
+
+        if (willMoveLeft)
+        {
+            playerLeftNode->action.pawnID = 1;
+            playerLeftNode->action.actionTaken = LEFT;
+            playerLeftNode->cost = depth;
+            playerLeftNode->stateEvaluationValue = depth;
+            // playerLeftNode->gridState->printGrid();
+            addToOpenList(playerLeftNode);
+        }
+
+        if (willMoveRight)
+        {
+            playerRightNode->action.pawnID = 1;
+            playerRightNode->action.actionTaken = RIGHT;
+            playerRightNode->cost = depth;
+            playerRightNode->stateEvaluationValue = depth;
+            // playerLeftNode->gridState->printGrid();
+            addToOpenList(playerRightNode);
+        }
+
         for (std::pair<int, pawn> pawnObj : currentNode->pawns)
         {
             pawn currentPawn = pawnObj.second;
@@ -206,11 +276,11 @@ void aStar::searchIteration()
             utils::moveForward(&newForwardNode->pawns[currentPawn.id], newForwardNode);
             // todo: score node and save value to state
             newForwardNode->action.pawnID = currentPawn.id;
-            newForwardNode->action.actionTaken = FORWARD;
+            newForwardNode->action.actionTaken = DOWN;
             newForwardNode->cost = depth;
             newForwardNode->stateEvaluationValue = depth;
             addToOpenList(newForwardNode);
-            //newForwardNode.gridState.printGrid();
+            //newForwardNode->gridState->printGrid();
 
 
             //move pawn backward
@@ -219,11 +289,11 @@ void aStar::searchIteration()
             utils::moveBackward(&newBackwardNode->pawns[pawnObj.second.id], newBackwardNode);
             // todo: score node and save value to state
             newBackwardNode->action.pawnID = currentPawn.id;
-            newBackwardNode->action.actionTaken = BACKWARD;
+            newBackwardNode->action.actionTaken = UP;
             newBackwardNode->cost = depth;
             newBackwardNode->stateEvaluationValue = depth;
             addToOpenList(newBackwardNode);
-            // newBackwardNode.gridState.printGrid();
+            //newBackwardNode->gridState->printGrid();
         }
     }
 }

@@ -8,8 +8,8 @@ const int VERTICAL = 0;
 const int HORIZONTAL = 1;
 const int DOWN = 1;
 const int UP = -1;
-const int RIGHT = 1;
-const int LEFT = -1;
+const int RIGHT = 2;
+const int LEFT = -2;
 const int FORWARD = 11;
 const int BACKWARD = -11;
 

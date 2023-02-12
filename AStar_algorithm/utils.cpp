@@ -69,6 +69,42 @@ bool utils::canNodeFit(std::shared_ptr<stateNode> state, actionData* action)
     return true;
 }
 
+bool utils::movePlayerForward(std::shared_ptr<stateNode> node)
+{
+    return false;
+}
+
+bool utils::movePlayerBackward(std::shared_ptr<stateNode> node)
+{
+    return false;
+}
+
+bool utils::movePlayerLeft(std::shared_ptr<stateNode> node)
+{
+    auto grid = node->gridState;
+    //grid->printGrid();
+    const int SIZE = 2;
+    
+    for (int i = 0; i < SIZE; i++)
+    {
+        int result = grid->get(node->player.x + SIZE, node->player.y + i);
+        if ((result == -1) || (result > 0))
+        {
+            return false;
+        }
+    }
+    
+    node->player.x += 1;
+    node->pawns[1].position = node->player;
+    refreshGrid(node);
+    //grid->printGrid();
+}
+
+bool utils::movePlayerRight(std::shared_ptr<stateNode> node)
+{
+    return false;
+}
+
 bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
 {
     bool mLoopFlag = true;
@@ -153,6 +189,14 @@ bool utils::isSameState(std::shared_ptr<stateNode> a, std::shared_ptr<stateNode>
 {
     std::map<int, pawn>::iterator iter;
     int sameCount = 0;
+
+    auto playerPosA = a->player;
+    auto playerPosB = b->player;
+    if ((playerPosA.x == playerPosB.x) && (playerPosA.y == playerPosB.y))
+    {
+        sameCount++;
+    }
+
     for (iter = a->pawns.begin(); iter != a->pawns.end(); iter++)
     {
         pawn temp_a = iter->second;
@@ -164,7 +208,8 @@ bool utils::isSameState(std::shared_ptr<stateNode> a, std::shared_ptr<stateNode>
         }
     }
     // if all the states are same, return true, else false
-    return (sameCount == a->pawns.size());
+    // added 1 to account for the player check
+    return (sameCount == (a->pawns.size() + 1));
 }
 
 void utils::refreshGrid(std::shared_ptr<stateNode> node)
@@ -173,6 +218,19 @@ void utils::refreshGrid(std::shared_ptr<stateNode> node)
     node->gridState->clearGrid();
     // updating the grid object with the new array
     
+    // paint player to the grid
+    for (int i = node->player.x; i < node->player.x + 2; i++)
+    {
+        for (int j = node->player.y; j < node->player.y + 2; j++)
+        {
+            if ((i < 0) || (j < 0))
+            {
+                break;
+            }
+            node->gridState->set(i, j, 1);
+        }
+    }
+
     // adding pawns to the grid
     //      look for out of bounds, overlap and throw error
     for (std::pair<int, pawn> pObj: node->pawns)
@@ -275,6 +333,8 @@ std::shared_ptr<stateNode> utils::copyNode(std::shared_ptr<stateNode> node)
         gridState,
         pawns
     );
+
+    copiedNode->player = node->player;
 
     
     // updating grid

@@ -22,6 +22,7 @@ private:
 	coordinates goal;
 	bool inProgress;
 	int depth;
+	coordinates player;
 
 	bool isGoal(std::shared_ptr<stateNode> node);
 	bool canFit(std::shared_ptr<stateNode> state, actionData* action);
