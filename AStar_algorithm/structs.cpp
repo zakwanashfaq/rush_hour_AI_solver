@@ -13,6 +13,9 @@ const int LEFT = -2;
 const int FORWARD = 11;
 const int BACKWARD = -11;
 
+// config enums
+const int DEPTH_FACTOR = 10;
+
 // structs
 struct coordinates {
 	int x;

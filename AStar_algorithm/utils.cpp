@@ -69,14 +69,30 @@ bool utils::canNodeFit(std::shared_ptr<stateNode> state, actionData* action)
     return true;
 }
 
-bool utils::movePlayerForward(std::shared_ptr<stateNode> node)
+bool utils::movePlayerUp(std::shared_ptr<stateNode> node)
 {
     return false;
 }
 
-bool utils::movePlayerBackward(std::shared_ptr<stateNode> node)
+bool utils::movePlayerDown(std::shared_ptr<stateNode> node)
 {
-    return false;
+    auto grid = node->gridState;
+    //grid->printGrid();
+    const int SIZE = 2;
+
+    for (int i = 0; i < SIZE; i++)
+    {
+        int result = grid->get(node->player.x + i, node->player.y + SIZE);
+        if ((result == -1) || (result > 0))
+        {
+            return false;
+        }
+    }
+
+    node->player.y += 1;
+    // todo: removing the line below causes error, but it should not be required
+    node->pawns[1].position = node->player;
+    refreshGrid(node);
 }
 
 bool utils::movePlayerLeft(std::shared_ptr<stateNode> node)

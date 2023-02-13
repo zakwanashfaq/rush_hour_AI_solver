@@ -155,6 +155,10 @@ void aStar::searchIteration()
         closedList.push_back(currentNode);
         depth++;
 
+        /*count++;
+        std::cout << count << ", openlist size: ";
+        std::cout << openList.size() << std::endl;*/
+
         // checking if goal is reached
         if (isGoal(currentNode))
         {
@@ -219,7 +223,7 @@ void aStar::searchIteration()
         bool willMoveUp = false; // utils::movePlayerLeft(playerUpNode);
 
         std::shared_ptr<stateNode> playerDownNode = utils::copyNode(currentNode);
-        bool willMoveDown = false; //utils::movePlayerLeft(playerDownNode);
+        bool willMoveDown = utils::movePlayerDown(playerDownNode);
 
         std::shared_ptr<stateNode> playerLeftNode = utils::copyNode(currentNode);
         bool willMoveLeft = utils::movePlayerLeft(playerLeftNode);
@@ -232,7 +236,7 @@ void aStar::searchIteration()
             playerUpNode->action.pawnID = 1;
             playerUpNode->action.actionTaken = UP;
             playerUpNode->cost = depth;
-            playerUpNode->stateEvaluationValue = depth;
+            playerUpNode->stateEvaluationValue = evaluateState(playerUpNode) - (depth * DEPTH_FACTOR);
             // playerUpNode->gridState->printGrid();
             addToOpenList(playerUpNode);
         }
@@ -242,7 +246,7 @@ void aStar::searchIteration()
             playerDownNode->action.pawnID = 1;
             playerDownNode->action.actionTaken = DOWN;
             playerDownNode->cost = depth;
-            playerDownNode->stateEvaluationValue = depth;
+            playerDownNode->stateEvaluationValue = evaluateState(playerDownNode) - (depth * DEPTH_FACTOR);
             // playerDownNode->gridState->printGrid();
             addToOpenList(playerDownNode);
         }
@@ -252,7 +256,7 @@ void aStar::searchIteration()
             playerLeftNode->action.pawnID = 1;
             playerLeftNode->action.actionTaken = LEFT;
             playerLeftNode->cost = depth;
-            playerLeftNode->stateEvaluationValue = depth;
+            playerLeftNode->stateEvaluationValue = evaluateState(playerLeftNode) - (depth * DEPTH_FACTOR);
             // playerLeftNode->gridState->printGrid();
             addToOpenList(playerLeftNode);
         }
@@ -278,7 +282,7 @@ void aStar::searchIteration()
             newForwardNode->action.pawnID = currentPawn.id;
             newForwardNode->action.actionTaken = DOWN;
             newForwardNode->cost = depth;
-            newForwardNode->stateEvaluationValue = depth;
+            newForwardNode->stateEvaluationValue = evaluateState(newForwardNode) - (depth * DEPTH_FACTOR);
             addToOpenList(newForwardNode);
             //newForwardNode->gridState->printGrid();
 
@@ -291,7 +295,7 @@ void aStar::searchIteration()
             newBackwardNode->action.pawnID = currentPawn.id;
             newBackwardNode->action.actionTaken = UP;
             newBackwardNode->cost = depth;
-            newBackwardNode->stateEvaluationValue = depth;
+            newBackwardNode->stateEvaluationValue = evaluateState(newBackwardNode) - (depth * DEPTH_FACTOR);
             addToOpenList(newBackwardNode);
             //newBackwardNode->gridState->printGrid();
         }
@@ -310,27 +314,62 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
     }
 
     // check if it already exists in openList, if it does check if cost is lower
-    for (std::shared_ptr<stateNode> oNode : openList)
+    //for (std::shared_ptr<stateNode> oNode : openList)
+    //{
+    //    // if cost is lower replace with the node
+    //    if (isSameState(oNode, node))
+    //    {
+    //        if (oNode->cost < node->cost)
+    //        {
+    //            oNode = node;
+    //        }
+    //        return;
+    //    }
+    //}
+
+    bool flag = true;
+
+    std::vector<std::shared_ptr<stateNode>> tempList;
+    while (!openList.empty())
     {
-        // if cost is lower replace with the node
+        std::shared_ptr<stateNode> node = openList.top();
+        openList.pop();
+        tempList.push_back(node);
+    }
+
+    std::sort(tempList.begin(), tempList.end(), CompareNode());
+
+    for (std::shared_ptr<stateNode> oNode : tempList)
+    {
+        // Do something with node
+        // ...
         if (isSameState(oNode, node))
         {
             if (oNode->cost < node->cost)
             {
                 oNode = node;
             }
-            return;
+            flag = false;
         }
+        // oNode->gridState->printGrid();
+        openList.push(oNode);
     }
 
-    nodesSearched++;
-    openList.push_back(node);
+    if (flag)
+    {
+        nodesSearched++;
+        openList.push(node);
+        // openList.push_back(node);
+    }
 }
 
-int aStar::evaluateState()
+int aStar::evaluateState(std::shared_ptr<stateNode> node)
 {
-    // todo: implement evaluateState
-    return depth;
+    coordinates player = node->player;
+    double distance = std::abs(sqrt(pow(goal.x - player.x, 2) + pow(goal.y - player.y, 2)));
+    int score = 10000 / distance;
+    
+    return score;
 }
 
 std::shared_ptr<stateNode> aStar::getNextNode()
@@ -340,10 +379,10 @@ std::shared_ptr<stateNode> aStar::getNextNode()
         return NULL;
     }
     // todo: get node with lowest cost
-    std::shared_ptr<stateNode> tempHold = openList[0];
+    std::shared_ptr<stateNode> tempHold = openList.top();
 
     // remove node from the list
-    openList.erase(openList.begin());
+    openList.pop();
 
     return tempHold;
 }

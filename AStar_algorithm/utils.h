@@ -6,8 +6,8 @@ namespace utils {
 	bool isNodeInClosedList(std::shared_ptr<stateNode> node, std::vector<stateNode>* openList);
 	bool isNodeInOpenList(std::shared_ptr<stateNode> node, std::vector<stateNode>* closedList);
 	bool isLegalAction();
-	bool movePlayerForward(std::shared_ptr<stateNode> node);
-	bool movePlayerBackward(std::shared_ptr<stateNode> node);
+	bool movePlayerUp(std::shared_ptr<stateNode> node);
+	bool movePlayerDown(std::shared_ptr<stateNode> node);
 	bool movePlayerLeft(std::shared_ptr<stateNode> node);
 	bool movePlayerRight(std::shared_ptr<stateNode> node);
 	bool moveForward(pawn* p, std::shared_ptr<stateNode> node);
@@ -18,5 +18,5 @@ namespace utils {
 	std::shared_ptr<stateNode> genarateNode();
 	std::shared_ptr<stateNode> copyNode(std::shared_ptr<stateNode> node);
 	// params are probalby wrong/unnecessary 
-	int  evaluateState(std::vector <std::vector<int>>* gridState); // this is the heuristic function
+	int evaluateState(std::vector <std::vector<int>>* gridState); // this is the heuristic function
 };
