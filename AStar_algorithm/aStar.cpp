@@ -266,7 +266,7 @@ void aStar::searchIteration()
             playerRightNode->action.pawnID = 1;
             playerRightNode->action.actionTaken = RIGHT;
             playerRightNode->cost = depth;
-            playerRightNode->stateEvaluationValue = depth;
+            playerRightNode->stateEvaluationValue = evaluateState(playerRightNode) - (depth * DEPTH_FACTOR);
             // playerLeftNode->gridState->printGrid();
             addToOpenList(playerRightNode);
         }
@@ -367,7 +367,7 @@ int aStar::evaluateState(std::shared_ptr<stateNode> node)
 {
     coordinates player = node->player;
     double distance = std::abs(sqrt(pow(goal.x - player.x, 2) + pow(goal.y - player.y, 2)));
-    int score = 10000 / distance;
+    int score = MAX_EVAL_VALUE / distance;
     
     return score;
 }

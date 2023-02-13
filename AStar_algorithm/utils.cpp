@@ -8,8 +8,9 @@ bool utils::canNodeFit(std::shared_ptr<stateNode> state, actionData* action)
     coordinates startPos = current_pawn.position;
     int x = current_pawn.position.x;
     int y = current_pawn.position.y;
+    
     // check vertiacal
-    if (current_pawn.orientation == 0)
+    if (current_pawn.orientation == VERTICAL)
     {
         // downward check
         if (action->actionTaken == 1)
@@ -37,10 +38,10 @@ bool utils::canNodeFit(std::shared_ptr<stateNode> state, actionData* action)
         }
     }
     // check horizontal
-    else
+    else if (current_pawn.orientation == HORIZONTAL)
     {
         // right check
-        if (action->actionTaken == 1)
+        if (action->actionTaken == RIGHT)
         {
 
             for (int i = 0; i < current_pawn.size; i++)
@@ -54,7 +55,7 @@ bool utils::canNodeFit(std::shared_ptr<stateNode> state, actionData* action)
             }
         }
         // left check
-        else if (action->actionTaken == -1)
+        else if (action->actionTaken == LEFT)
         {
             x--;
             int value = grid->get(x, y);
@@ -63,6 +64,10 @@ bool utils::canNodeFit(std::shared_ptr<stateNode> state, actionData* action)
                 return false;
             }       
         }
+    }
+    else
+    {
+        throw "Orientation error";
     }
 
     // can overlap its own self, 0 and id value to be simulated as empty
@@ -124,6 +129,10 @@ bool utils::movePlayerRight(std::shared_ptr<stateNode> node)
 bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
 {
     bool mLoopFlag = true;
+    if (p->id == 4)
+    {
+        bool f = true;
+    }
     // check orientation
     if (p->orientation == HORIZONTAL)
     {
@@ -139,6 +148,7 @@ bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
                 mLoopFlag = false;
             }
         }
+        refreshGrid(node);
         return true;
     }
     else if (p->orientation == VERTICAL)
@@ -155,6 +165,7 @@ bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
                 mLoopFlag = false;
             }
         }
+        refreshGrid(node);
         return true;
     }
     return false;
