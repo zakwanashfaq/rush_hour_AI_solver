@@ -154,7 +154,7 @@ void aStar::searchIteration()
         }
         closedList.push_back(currentNode);
 
-        /*if (count >= 100) {
+         /*if (count >= 100) {
             count = 0;
             std::cout << depth << ", openlist size: ";
             std::cout << openList.size() << std::endl;
@@ -376,7 +376,7 @@ std::shared_ptr<stateNode> aStar::getNextNode()
     {
         return NULL;
     }
-    // todo: get node with lowest cost
+    // get node with lowest cost
     std::shared_ptr<stateNode> tempHold = openList.top();
 
     // remove node from the list

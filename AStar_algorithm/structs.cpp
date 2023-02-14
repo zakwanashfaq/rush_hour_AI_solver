@@ -13,7 +13,7 @@ const int LEFT = -2;
 const int FORWARD = 11;
 const int BACKWARD = -11;
 
-// config enums
+// evaluation config enums
 const int DEPTH_FACTOR = 1;
 const int MAX_EVAL_VALUE = 10000;
 

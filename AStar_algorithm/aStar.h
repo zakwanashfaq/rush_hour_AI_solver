@@ -10,6 +10,10 @@
 
 struct CompareNode {
 	bool operator()(std::shared_ptr<stateNode> a, std::shared_ptr<stateNode> b) const {
+		if (a->cost > b->cost)
+		{
+			return false;
+		}
 		return a->stateEvaluationValue < b->stateEvaluationValue;
 	}
 };
