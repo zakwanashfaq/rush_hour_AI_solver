@@ -313,20 +313,6 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
         }
     }
 
-    // check if it already exists in openList, if it does check if cost is lower
-    //for (std::shared_ptr<stateNode> oNode : openList)
-    //{
-    //    // if cost is lower replace with the node
-    //    if (isSameState(oNode, node))
-    //    {
-    //        if (oNode->cost < node->cost)
-    //        {
-    //            oNode = node;
-    //        }
-    //        return;
-    //    }
-    //}
-
     bool flag = true;
 
     std::vector<std::shared_ptr<stateNode>> tempList;
@@ -341,11 +327,9 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
 
     for (std::shared_ptr<stateNode> oNode : tempList)
     {
-        // Do something with node
-        // ...
         if (isSameState(oNode, node))
         {
-            if (oNode->cost < node->cost)
+            if (oNode->cost > node->cost)
             {
                 oNode = node;
             }
@@ -361,14 +345,16 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
         openList.push(node);
         // openList.push_back(node);
     }
+
 }
 
 int aStar::evaluateState(std::shared_ptr<stateNode> node)
 {
     coordinates player = node->player;
-    double distance = std::abs(sqrt(pow(goal.x - player.x, 2) + pow(goal.y - player.y, 2)));
+    double distance = sqrt(pow(std::abs(goal.x - player.x), 2) + pow(std::abs(goal.y - player.y), 2));
     int score = MAX_EVAL_VALUE / distance;
-    
+    //node->gridState->printGrid();
+    //std::cout << "Score: " << score << std::endl;
     return score;
 }
 

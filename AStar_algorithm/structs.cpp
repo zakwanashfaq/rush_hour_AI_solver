@@ -14,8 +14,8 @@ const int FORWARD = 11;
 const int BACKWARD = -11;
 
 // config enums
-const int DEPTH_FACTOR = 10;
-const int MAX_EVAL_VALUE = 1000;
+const int DEPTH_FACTOR = 1;
+const int MAX_EVAL_VALUE = 10000;
 
 // structs
 struct coordinates {

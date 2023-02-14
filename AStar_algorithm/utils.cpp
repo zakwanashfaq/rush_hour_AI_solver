@@ -352,6 +352,7 @@ std::shared_ptr<stateNode> utils::copyNode(std::shared_ptr<stateNode> node)
             coordinates(tempPawn.position.x, tempPawn.position.y)
         );
     }
+
     std::shared_ptr<stateNode> copiedNode = std::make_shared<stateNode>(
         -1,
         -1,
