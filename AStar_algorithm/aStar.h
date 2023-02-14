@@ -24,14 +24,13 @@ public:
 
 private:
 	std::shared_ptr<stateNode> root;
-	std::vector<std::shared_ptr<stateNode>> openList2; // not sorted
 	std::priority_queue<std::shared_ptr<stateNode>, std::vector<std::shared_ptr<stateNode>>, CompareNode> openList;
 	std::vector<std::shared_ptr<stateNode>> closedList;
 	int nodesSearched;
 	coordinates goal;
+	coordinates player;
 	bool inProgress;
 	int depth;
-	coordinates player;
 	int count = 0;
 
 	bool isGoal(std::shared_ptr<stateNode> node);

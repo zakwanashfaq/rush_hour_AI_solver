@@ -74,13 +74,13 @@ aStar::aStar(std::string inputFileName)
 
     
     root = utils::genarateNode();
-    root->cost = 0;
-    root->stateEvaluationValue = 0;
     root->parent = NULL;
     root->action = a;
     root->gridState = startGrid;
     root->pawns = tempPawns;
     root->player = player;
+    root->cost = depth;
+    root->stateEvaluationValue = evaluateState(root);
 }
 
 bool aStar::isGoal(std::shared_ptr<stateNode> node)
@@ -153,11 +153,13 @@ void aStar::searchIteration()
             return;
         }
         closedList.push_back(currentNode);
-        depth++;
 
-        /*count++;
-        std::cout << count << ", openlist size: ";
-        std::cout << openList.size() << std::endl;*/
+        /*if (count >= 100) {
+            count = 0;
+            std::cout << depth << ", openlist size: ";
+            std::cout << openList.size() << std::endl;
+        } 
+        count++;*/
 
         // checking if goal is reached
         if (isGoal(currentNode))
@@ -218,9 +220,14 @@ void aStar::searchIteration()
             throw "Max allowed depth reached!\n";
         }
 
-        // (todo) player moves here
+        // todo: investigate how pawn with -1 id gets added
+        //       this is causing serious performance issues
+        //       temporary fix below
+        currentNode->pawns.erase(1);
+
+        // the player moves here
         std::shared_ptr<stateNode> playerUpNode = utils::copyNode(currentNode);
-        bool willMoveUp = false; // utils::movePlayerLeft(playerUpNode);
+        bool willMoveUp = utils::movePlayerUp(playerUpNode);
 
         std::shared_ptr<stateNode> playerDownNode = utils::copyNode(currentNode);
         bool willMoveDown = utils::movePlayerDown(playerDownNode);
@@ -229,14 +236,14 @@ void aStar::searchIteration()
         bool willMoveLeft = utils::movePlayerLeft(playerLeftNode);
 
         std::shared_ptr<stateNode> playerRightNode = utils::copyNode(currentNode);
-        bool willMoveRight = false; //utils::movePlayerLeft(playerRightNode);
+        bool willMoveRight = utils::movePlayerRight(playerRightNode);
 
         if (willMoveUp)
         {
             playerUpNode->action.pawnID = 1;
             playerUpNode->action.actionTaken = UP;
             playerUpNode->cost = depth;
-            playerUpNode->stateEvaluationValue = evaluateState(playerUpNode) - (depth * DEPTH_FACTOR);
+            playerUpNode->stateEvaluationValue = evaluateState(playerUpNode);
             // playerUpNode->gridState->printGrid();
             addToOpenList(playerUpNode);
         }
@@ -246,7 +253,7 @@ void aStar::searchIteration()
             playerDownNode->action.pawnID = 1;
             playerDownNode->action.actionTaken = DOWN;
             playerDownNode->cost = depth;
-            playerDownNode->stateEvaluationValue = evaluateState(playerDownNode) - (depth * DEPTH_FACTOR);
+            playerDownNode->stateEvaluationValue = evaluateState(playerDownNode);
             // playerDownNode->gridState->printGrid();
             addToOpenList(playerDownNode);
         }
@@ -256,7 +263,7 @@ void aStar::searchIteration()
             playerLeftNode->action.pawnID = 1;
             playerLeftNode->action.actionTaken = LEFT;
             playerLeftNode->cost = depth;
-            playerLeftNode->stateEvaluationValue = evaluateState(playerLeftNode) - (depth * DEPTH_FACTOR);
+            playerLeftNode->stateEvaluationValue = evaluateState(playerLeftNode);
             // playerLeftNode->gridState->printGrid();
             addToOpenList(playerLeftNode);
         }
@@ -266,7 +273,7 @@ void aStar::searchIteration()
             playerRightNode->action.pawnID = 1;
             playerRightNode->action.actionTaken = RIGHT;
             playerRightNode->cost = depth;
-            playerRightNode->stateEvaluationValue = evaluateState(playerRightNode) - (depth * DEPTH_FACTOR);
+            playerRightNode->stateEvaluationValue = evaluateState(playerRightNode);
             // playerLeftNode->gridState->printGrid();
             addToOpenList(playerRightNode);
         }
@@ -282,7 +289,7 @@ void aStar::searchIteration()
             newForwardNode->action.pawnID = currentPawn.id;
             newForwardNode->action.actionTaken = DOWN;
             newForwardNode->cost = depth;
-            newForwardNode->stateEvaluationValue = evaluateState(newForwardNode) - (depth * DEPTH_FACTOR);
+            newForwardNode->stateEvaluationValue = evaluateState(newForwardNode);
             addToOpenList(newForwardNode);
             //newForwardNode->gridState->printGrid();
 
@@ -295,10 +302,13 @@ void aStar::searchIteration()
             newBackwardNode->action.pawnID = currentPawn.id;
             newBackwardNode->action.actionTaken = UP;
             newBackwardNode->cost = depth;
-            newBackwardNode->stateEvaluationValue = evaluateState(newBackwardNode) - (depth * DEPTH_FACTOR);
+            newBackwardNode->stateEvaluationValue = evaluateState(newBackwardNode);
             addToOpenList(newBackwardNode);
             //newBackwardNode->gridState->printGrid();
         }
+
+
+        depth++;
     }
 }
 
@@ -353,8 +363,10 @@ int aStar::evaluateState(std::shared_ptr<stateNode> node)
     coordinates player = node->player;
     double distance = sqrt(pow(std::abs(goal.x - player.x), 2) + pow(std::abs(goal.y - player.y), 2));
     int score = MAX_EVAL_VALUE / distance;
-    //node->gridState->printGrid();
-    //std::cout << "Score: " << score << std::endl;
+    score -= (depth * DEPTH_FACTOR);
+    // todo: check manhattan diagonal path and how many pawns block this path
+    // score unblocked states higher
+    
     return score;
 }
 

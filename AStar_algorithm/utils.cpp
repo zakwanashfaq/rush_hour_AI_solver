@@ -76,7 +76,24 @@ bool utils::canNodeFit(std::shared_ptr<stateNode> state, actionData* action)
 
 bool utils::movePlayerUp(std::shared_ptr<stateNode> node)
 {
-    return false;
+    auto grid = node->gridState;
+    //grid->printGrid();
+    const int SIZE = 2;
+
+    for (int i = 0; i < SIZE; i++)
+    {
+        int result = grid->get(node->player.x + i, node->player.y - 1);
+        if ((result == -1) || (result > 0))
+        {
+            return false;
+        }
+    }
+
+    node->player.y -= 1;
+    // todo: removing the line below causes error, but it should not be required
+    node->pawns[1].position = node->player;
+    refreshGrid(node);
+    return true;
 }
 
 bool utils::movePlayerDown(std::shared_ptr<stateNode> node)
@@ -98,6 +115,7 @@ bool utils::movePlayerDown(std::shared_ptr<stateNode> node)
     // todo: removing the line below causes error, but it should not be required
     node->pawns[1].position = node->player;
     refreshGrid(node);
+    return true;
 }
 
 bool utils::movePlayerLeft(std::shared_ptr<stateNode> node)
@@ -108,22 +126,40 @@ bool utils::movePlayerLeft(std::shared_ptr<stateNode> node)
     
     for (int i = 0; i < SIZE; i++)
     {
-        int result = grid->get(node->player.x + SIZE, node->player.y + i);
+        int result = grid->get(node->player.x - 1, node->player.y + i);
         if ((result == -1) || (result > 0))
         {
             return false;
         }
     }
     
+    node->player.x -= 1;
+    node->pawns[1].position = node->player;
+    refreshGrid(node);
+    //grid->printGrid();
+    return true;
+}
+
+bool utils::movePlayerRight(std::shared_ptr<stateNode> node)
+{    
+    auto grid = node->gridState;
+    //grid->printGrid();
+    const int SIZE = 2;
+
+    for (int i = 0; i < SIZE; i++)
+    {
+        int result = grid->get(node->player.x + SIZE, node->player.y + i);
+        if ((result == -1) || (result > 0))
+        {
+            return false;
+        }
+    }
+
     node->player.x += 1;
     node->pawns[1].position = node->player;
     refreshGrid(node);
     //grid->printGrid();
-}
-
-bool utils::movePlayerRight(std::shared_ptr<stateNode> node)
-{
-    return false;
+    return true;
 }
 
 bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
