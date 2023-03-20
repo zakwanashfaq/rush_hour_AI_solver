@@ -1,4 +1,5 @@
 #pragma once
+#include <chrono>
 #include <memory>
 #include "map"
 #include "Grid.h"
@@ -14,8 +15,8 @@ const int FORWARD = 11;
 const int BACKWARD = -11;
 
 // evaluation config enums
-const int DEPTH_FACTOR = 1;
-const int MAX_EVAL_VALUE = 10000;
+const int DEPTH_FACTOR = 4;
+const int MAX_EVAL_VALUE = 10;
 
 // structs
 struct coordinates {

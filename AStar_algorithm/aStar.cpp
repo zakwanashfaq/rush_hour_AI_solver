@@ -79,7 +79,7 @@ aStar::aStar(std::string inputFileName)
     root->gridState = startGrid;
     root->pawns = tempPawns;
     root->player = player;
-    root->cost = depth;
+    root->cost = 0;
     root->stateEvaluationValue = evaluateState(root);
 }
 
@@ -158,8 +158,8 @@ void aStar::searchIteration()
             count = 0;
             std::cout << depth << ", openlist size: ";
             std::cout << openList.size() << std::endl;
-        } 
-        count++;*/
+        } */
+        count++;
 
         // checking if goal is reached
         if (isGoal(currentNode))
@@ -242,7 +242,7 @@ void aStar::searchIteration()
         {
             playerUpNode->action.pawnID = 1;
             playerUpNode->action.actionTaken = UP;
-            playerUpNode->cost = depth;
+            playerUpNode->cost = currentNode->cost + 1;
             playerUpNode->stateEvaluationValue = evaluateState(playerUpNode);
             // playerUpNode->gridState->printGrid();
             addToOpenList(playerUpNode);
@@ -252,7 +252,7 @@ void aStar::searchIteration()
         {
             playerDownNode->action.pawnID = 1;
             playerDownNode->action.actionTaken = DOWN;
-            playerDownNode->cost = depth;
+            playerDownNode->cost = currentNode->cost + 1;
             playerDownNode->stateEvaluationValue = evaluateState(playerDownNode);
             // playerDownNode->gridState->printGrid();
             addToOpenList(playerDownNode);
@@ -262,7 +262,7 @@ void aStar::searchIteration()
         {
             playerLeftNode->action.pawnID = 1;
             playerLeftNode->action.actionTaken = LEFT;
-            playerLeftNode->cost = depth;
+            playerLeftNode->cost = currentNode->cost + 1;
             playerLeftNode->stateEvaluationValue = evaluateState(playerLeftNode);
             // playerLeftNode->gridState->printGrid();
             addToOpenList(playerLeftNode);
@@ -272,7 +272,7 @@ void aStar::searchIteration()
         {
             playerRightNode->action.pawnID = 1;
             playerRightNode->action.actionTaken = RIGHT;
-            playerRightNode->cost = depth;
+            playerRightNode->cost = currentNode->cost + 1;
             playerRightNode->stateEvaluationValue = evaluateState(playerRightNode);
             // playerLeftNode->gridState->printGrid();
             addToOpenList(playerRightNode);
@@ -287,8 +287,15 @@ void aStar::searchIteration()
             utils::moveForward(&newForwardNode->pawns[currentPawn.id], newForwardNode);
             // todo: score node and save value to state
             newForwardNode->action.pawnID = currentPawn.id;
-            newForwardNode->action.actionTaken = DOWN;
-            newForwardNode->cost = depth;
+            if (currentPawn.orientation == HORIZONTAL)
+            {
+                newForwardNode->action.actionTaken = RIGHT;
+            }
+            else if (currentPawn.orientation == VERTICAL)
+            {
+                newForwardNode->action.actionTaken = DOWN;
+            }
+            newForwardNode->cost = currentNode->cost + 1;
             newForwardNode->stateEvaluationValue = evaluateState(newForwardNode);
             addToOpenList(newForwardNode);
             //newForwardNode->gridState->printGrid();
@@ -300,20 +307,33 @@ void aStar::searchIteration()
             utils::moveBackward(&newBackwardNode->pawns[pawnObj.second.id], newBackwardNode);
             // todo: score node and save value to state
             newBackwardNode->action.pawnID = currentPawn.id;
-            newBackwardNode->action.actionTaken = UP;
-            newBackwardNode->cost = depth;
+            if (currentPawn.orientation == HORIZONTAL)
+            {
+                newBackwardNode->action.actionTaken = LEFT;
+            }
+            else if (currentPawn.orientation == VERTICAL)
+            {
+                newBackwardNode->action.actionTaken = UP;
+            }
+            newBackwardNode->cost = currentNode->cost + 1;
             newBackwardNode->stateEvaluationValue = evaluateState(newBackwardNode);
             addToOpenList(newBackwardNode);
             //newBackwardNode->gridState->printGrid();
         }
 
 
-        depth++;
+        if (currentNode->cost > depth)
+        {
+            depth = currentNode->cost;
+        }
     }
 }
 
 void aStar::addToOpenList(std::shared_ptr<stateNode> node)
 {
+    //std::cout << "########################" << std::endl;
+    // std::cout.flush();
+    auto startTime = std::chrono::high_resolution_clock::now();
     // check if it already exists in closedList
     for (std::shared_ptr<stateNode> cNode: closedList)
     {
@@ -322,9 +342,13 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
             return;
         }
     }
+    auto endTime = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
+    //std::cout << "Closed List: " << duration << " microseconds" << std::endl;
 
     bool flag = true;
 
+    startTime = std::chrono::high_resolution_clock::now();
     std::vector<std::shared_ptr<stateNode>> tempList;
     while (!openList.empty())
     {
@@ -332,8 +356,13 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
         openList.pop();
         tempList.push_back(node);
     }
+    endTime = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
+    //std::cout << "Copy open List: " << duration << " microseconds" << std::endl;
 
-    std::sort(tempList.begin(), tempList.end(), CompareNode());
+
+    startTime = std::chrono::high_resolution_clock::now();
+    // std::sort(tempList.begin(), tempList.end(), CompareNode());
 
     for (std::shared_ptr<stateNode> oNode : tempList)
     {
@@ -356,6 +385,10 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
         // openList.push_back(node);
     }
 
+    endTime = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
+    //std::cout << "Open List Check: " << duration << " microseconds" << std::endl;
+
 }
 
 int aStar::evaluateState(std::shared_ptr<stateNode> node)
@@ -363,7 +396,7 @@ int aStar::evaluateState(std::shared_ptr<stateNode> node)
     coordinates player = node->player;
     double distance = sqrt(pow(std::abs(goal.x - player.x), 2) + pow(std::abs(goal.y - player.y), 2));
     int score = MAX_EVAL_VALUE / distance;
-    score -= (depth * DEPTH_FACTOR);
+    score -= (node->cost * DEPTH_FACTOR);
     // todo: check manhattan diagonal path and how many pawns block this path
     // score unblocked states higher
     

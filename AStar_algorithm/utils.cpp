@@ -102,6 +102,9 @@ bool utils::movePlayerDown(std::shared_ptr<stateNode> node)
     //grid->printGrid();
     const int SIZE = 2;
 
+    int stepCount = 0;
+    bool stop = false;
+
     for (int i = 0; i < SIZE; i++)
     {
         int result = grid->get(node->player.x + i, node->player.y + SIZE);
