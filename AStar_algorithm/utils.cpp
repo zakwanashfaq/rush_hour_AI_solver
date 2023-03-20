@@ -144,27 +144,33 @@ bool utils::movePlayerLeft(std::shared_ptr<stateNode> node)
     auto grid = node->gridState;
     //grid->printGrid();
     const int SIZE = 2;
-    bool stop = true;
+    bool stop = false;
+    int count = 0;
 
-    /*while (!stop)
+    while (!stop)
     {
-
+        if (count > 100)
+        {
+            throw "left outbound error";
+        }
+        for (int i = 0; i < SIZE; i++)
+        {
+            int result = grid->get(node->player.x - 1, node->player.y + i);
+            if ((result == -1) || (result > 0))
+            {
+                stop = true;
+                break;
+            }
+        }
         if (!stop)
         {
-
+            node->player.x -= 1;
         }
-    }*/
-    
-    for (int i = 0; i < SIZE; i++)
-    {
-        int result = grid->get(node->player.x - 1, node->player.y + i);
-        if ((result == -1) || (result > 0))
-        {
-            return false;
-        }
+        count++;
     }
     
-    node->player.x -= 1;
+    
+    
     node->pawns[1].position = node->player;
     refreshGrid(node);
     //grid->printGrid();
@@ -176,27 +182,31 @@ bool utils::movePlayerRight(std::shared_ptr<stateNode> node)
     auto grid = node->gridState;
     //grid->printGrid();
     const int SIZE = 2;
-    bool stop = true;
+    bool stop = false;
+    int count = 0;
 
-    /*while (!stop)
+    while (!stop)
     {
-
+        if (count > 100)
+        {
+            throw "left outbound error";
+        }
+        for (int i = 0; i < SIZE; i++)
+        {
+            int result = grid->get(node->player.x + SIZE, node->player.y + i);
+            if ((result == -1) || (result > 0))
+            {
+                stop = true;
+                break;
+            }
+        }
         if (!stop)
         {
-
+            node->player.x += 1;
         }
-    }*/
-
-    for (int i = 0; i < SIZE; i++)
-    {
-        int result = grid->get(node->player.x + SIZE, node->player.y + i);
-        if ((result == -1) || (result > 0))
-        {
-            return false;
-        }
+        count++;
     }
 
-    node->player.x += 1;
     node->pawns[1].position = node->player;
     refreshGrid(node);
     //grid->printGrid();
