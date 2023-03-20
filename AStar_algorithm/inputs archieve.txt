@@ -25,18 +25,6 @@ Pawn 3 VERTICAL 4 3
 Goal 5 2
 
 Grid 7 7
-Player 2 HORIZONTAL 2 3
-Pawn 3 HORIZONTAL 1 1
-Pawn 2 VERTICAL 4 1
-Pawn 2 HORIZONTAL 0 2
-Pawn 3 VERTICAL 5 2
-Pawn 3 VERTICAL 0 3
-Pawn 2 VERTICAL 1 5
-Pawn 2 HORIZONTAL 4 5
-Pawn 3 HORIZONTAL 2 6
-Goal 5 2
-
-Grid 7 7
 Player 2 HORIZONTAL 4 3
 Pawn 2 VERTICAL 1 0
 Pawn 3 HORIZONTAL 2 0
@@ -50,3 +38,32 @@ Pawn 2 VERTICAL 2 4
 Pawn 2 VERTICAL 4 5
 Pawn 3 HORIZONTAL 1 6
 Goal 5 2
+
+//////////////////////////////////////////////////////////////////////////
+
+J1
+Grid 7 7
+Player 2 HORIZONTAL 2 3
+Pawn 3 HORIZONTAL 1 1
+Pawn 2 VERTICAL 4 1
+Pawn 2 HORIZONTAL 0 2
+Pawn 3 VERTICAL 5 2
+Pawn 3 VERTICAL 0 3
+Pawn 2 VERTICAL 1 5
+Pawn 2 HORIZONTAL 4 5
+Pawn 3 HORIZONTAL 2 6
+Goal 5 2
+
+J2
+Grid 7 7
+Goal 5 2
+Player 2 HORIZONTAL 3 5
+Pawn 3 HORIZONTAL 4 1
+Pawn 3 HORIZONTAL 0 2
+Pawn 2 VERTICAL 3 2
+Pawn 2 VERTICAL 4 2
+Pawn 2 HORIZONTAL 5 3
+Pawn 2 HORIZONTAL 1 4
+
+
+
