@@ -81,16 +81,23 @@ bool utils::movePlayerUp(std::shared_ptr<stateNode> node)
     const int SIZE = 2;
     bool stop = false;
 
-    for (int i = 0; i < SIZE; i++)
+    while (!stop)
     {
-        int result = grid->get(node->player.x + i, node->player.y - 1);
-        if ((result == -1) || (result > 0))
+        for (int i = 0; i < SIZE; i++)
         {
-            return false;
+            int result = grid->get(node->player.x + i, node->player.y - 1);
+            if ((result == -1) || (result > 0))
+            {
+                stop = true;
+                break;
+            }
+        }
+        if (!stop)
+        {
+            node->player.y -= 1;
         }
     }
-
-    node->player.y -= 1;
+    
     // todo: removing the line below causes error, but it should not be required
     node->pawns[1].position = node->player;
     refreshGrid(node);
@@ -137,7 +144,16 @@ bool utils::movePlayerLeft(std::shared_ptr<stateNode> node)
     auto grid = node->gridState;
     //grid->printGrid();
     const int SIZE = 2;
-    bool stop = false;
+    bool stop = true;
+
+    /*while (!stop)
+    {
+
+        if (!stop)
+        {
+
+        }
+    }*/
     
     for (int i = 0; i < SIZE; i++)
     {
@@ -160,7 +176,16 @@ bool utils::movePlayerRight(std::shared_ptr<stateNode> node)
     auto grid = node->gridState;
     //grid->printGrid();
     const int SIZE = 2;
-    bool stop = false;
+    bool stop = true;
+
+    /*while (!stop)
+    {
+
+        if (!stop)
+        {
+
+        }
+    }*/
 
     for (int i = 0; i < SIZE; i++)
     {
