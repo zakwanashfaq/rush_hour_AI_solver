@@ -367,6 +367,21 @@ void utils::refreshGrid(std::shared_ptr<stateNode> node)
     }
 }
 
+std::string utils::getNodeEncoding(std::shared_ptr<stateNode> node)
+{
+    std::string encoding = "player:";
+    encoding += node->player.x + "-" + node->player.y;
+    encoding += "/";
+    for (auto pawn : node->pawns)
+    {
+        
+        encoding += "p:";
+        encoding += pawn.second.position.x + "-" + pawn.second.position.y;
+        encoding += "/";
+    }
+    return encoding;
+}
+
 int utils::getActionNum(pawn* p, int action)
 {
     if (p->orientation == VERTICAL)

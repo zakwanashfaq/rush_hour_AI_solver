@@ -152,7 +152,9 @@ void aStar::searchIteration()
             std::cout << "This problem is not solvable. Check input parameters.";
             return;
         }
+        std::string encodedNode = utils::getNodeEncoding(currentNode);
         closedList.push_back(currentNode);
+        closedHash[encodedNode] = true;
 
          /*if (count >= 100) {
             count = 0;
@@ -335,13 +337,18 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
     // std::cout.flush();
     auto startTime = std::chrono::high_resolution_clock::now();
     // check if it already exists in closedList
-    for (std::shared_ptr<stateNode> cNode: closedList)
+    std::string encodedNode = utils::getNodeEncoding(node);
+    if (closedHash[encodedNode])
+    {
+        return;
+    }
+    /*for (std::shared_ptr<stateNode> cNode: closedList)
     {
         if (isSameState(cNode, node))
         {
             return;
         }
-    }
+    }*/
     auto endTime = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
     //std::cout << "Closed List: " << duration << " microseconds" << std::endl;
