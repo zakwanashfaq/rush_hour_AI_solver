@@ -356,13 +356,13 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
     bool flag = true;
 
     startTime = std::chrono::high_resolution_clock::now();
-    std::vector<std::shared_ptr<stateNode>> tempList;
-    while (!openList.empty())
-    {
-        std::shared_ptr<stateNode> node = openList.top();
-        openList.pop();
-        tempList.push_back(node);
-    }
+    //std::vector<std::shared_ptr<stateNode>> tempList;
+    //while (!openList.empty())
+    //{
+    //    std::shared_ptr<stateNode> node = openList.top();
+    //    openList.pop();
+    //    tempList.push_back(node);
+    //}
     endTime = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
     //std::cout << "Copy open List: " << duration << " microseconds" << std::endl;
@@ -371,26 +371,37 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
     startTime = std::chrono::high_resolution_clock::now();
     // std::sort(tempList.begin(), tempList.end(), CompareNode());
 
-    for (std::shared_ptr<stateNode> oNode : tempList)
+    if (!openHash[encodedNode])
     {
-        if (isSameState(oNode, node))
-        {
-            if (oNode->cost > node->cost)
-            {
-                oNode = node;
-            }
-            flag = false;
-        }
-        // oNode->gridState->printGrid();
-        openList.push(oNode);
+        openList.push(node);
+        openHash[encodedNode] = true;
+        nodesSearched++;
+    }
+    else
+    {
+        int x = 5;
     }
 
-    if (flag)
-    {
-        nodesSearched++;
-        openList.push(node);
-        // openList.push_back(node);
-    }
+    //for (std::shared_ptr<stateNode> oNode : tempList)
+    //{
+    //    if (isSameState(oNode, node))
+    //    {
+    //        if (oNode->cost > node->cost)
+    //        {
+    //            oNode = node;
+    //        }
+    //        flag = false;
+    //    }
+    //    // oNode->gridState->printGrid();
+    //    openList.push(oNode);
+    //}
+
+    //if (flag)
+    //{
+    //    nodesSearched++;
+    //    openList.push(node);
+    //    // openList.push_back(node);
+    //}
 
     endTime = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();

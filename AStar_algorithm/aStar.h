@@ -37,7 +37,7 @@ private:
 	std::priority_queue<std::shared_ptr<stateNode>, std::vector<std::shared_ptr<stateNode>>, CompareNode> openList;
 	std::vector<std::shared_ptr<stateNode>> closedList;
 	std::unordered_map<std::string, bool> closedHash;
-	std::unordered_map<std::string, std::shared_ptr<stateNode>> openHash;
+	std::unordered_map<std::string, bool> openHash;
 	int nodesSearched;
 	coordinates goal;
 	coordinates player;

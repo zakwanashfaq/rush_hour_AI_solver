@@ -370,14 +370,13 @@ void utils::refreshGrid(std::shared_ptr<stateNode> node)
 std::string utils::getNodeEncoding(std::shared_ptr<stateNode> node)
 {
     std::string encoding = "player:";
-    encoding += node->player.x + "-" + node->player.y;
-    encoding += "/";
+    encoding += std::to_string(node->player.x) + "-" + std::to_string(node->player.y) + "$";
     for (auto pawn : node->pawns)
     {
         
-        encoding += "p:";
-        encoding += pawn.second.position.x + "-" + pawn.second.position.y;
-        encoding += "/";
+        encoding += "p(" + std::to_string(pawn.second.id) + ", " + std::to_string(pawn.second.orientation) + "):";
+        encoding += std::to_string(pawn.second.position.x) + "-" + std::to_string(pawn.second.position.y);
+        encoding += "$";
     }
     return encoding;
 }
