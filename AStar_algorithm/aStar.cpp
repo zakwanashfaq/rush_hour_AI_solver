@@ -355,7 +355,7 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
 
     bool flag = true;
 
-    startTime = std::chrono::high_resolution_clock::now();
+    //startTime = std::chrono::high_resolution_clock::now();
     //std::vector<std::shared_ptr<stateNode>> tempList;
     //while (!openList.empty())
     //{
@@ -363,8 +363,8 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
     //    openList.pop();
     //    tempList.push_back(node);
     //}
-    endTime = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
+    //endTime = std::chrono::high_resolution_clock::now();
+    //duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
     //std::cout << "Copy open List: " << duration << " microseconds" << std::endl;
 
 
@@ -376,10 +376,6 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
         openList.push(node);
         openHash[encodedNode] = true;
         nodesSearched++;
-    }
-    else
-    {
-        int x = 5;
     }
 
     //for (std::shared_ptr<stateNode> oNode : tempList)
@@ -405,7 +401,7 @@ void aStar::addToOpenList(std::shared_ptr<stateNode> node)
 
     endTime = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
-    //std::cout << "Open List Check: " << duration << " microseconds" << std::endl;
+    // std::cout << "Open List Check: " << duration << " microseconds" << std::endl;
 
 }
 
