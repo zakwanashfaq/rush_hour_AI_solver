@@ -8,8 +8,9 @@ bool utils::canNodeFit(std::shared_ptr<stateNode> state, actionData* action)
     coordinates startPos = current_pawn.position;
     int x = current_pawn.position.x;
     int y = current_pawn.position.y;
+    
     // check vertiacal
-    if (current_pawn.orientation == 0)
+    if (current_pawn.orientation == VERTICAL)
     {
         // downward check
         if (action->actionTaken == 1)
@@ -37,10 +38,10 @@ bool utils::canNodeFit(std::shared_ptr<stateNode> state, actionData* action)
         }
     }
     // check horizontal
-    else
+    else if (current_pawn.orientation == HORIZONTAL)
     {
         // right check
-        if (action->actionTaken == 1)
+        if (action->actionTaken == RIGHT)
         {
 
             for (int i = 0; i < current_pawn.size; i++)
@@ -54,7 +55,7 @@ bool utils::canNodeFit(std::shared_ptr<stateNode> state, actionData* action)
             }
         }
         // left check
-        else if (action->actionTaken == -1)
+        else if (action->actionTaken == LEFT)
         {
             x--;
             int value = grid->get(x, y);
@@ -64,14 +65,161 @@ bool utils::canNodeFit(std::shared_ptr<stateNode> state, actionData* action)
             }       
         }
     }
+    else
+    {
+        throw "Orientation error";
+    }
 
     // can overlap its own self, 0 and id value to be simulated as empty
+    return true;
+}
+
+bool utils::movePlayerUp(std::shared_ptr<stateNode> node)
+{
+    auto grid = node->gridState;
+    //grid->printGrid();
+    const int SIZE = 2;
+    bool stop = false;
+
+    while (!stop)
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            int result = grid->get(node->player.x + i, node->player.y - 1);
+            if ((result == -1) || (result > 0))
+            {
+                stop = true;
+                break;
+            }
+        }
+        if (!stop)
+        {
+            node->player.y -= 1;
+        }
+    }
+    
+    // todo: removing the line below causes error, but it should not be required
+    node->pawns[1].position = node->player;
+    refreshGrid(node);
+    return true;
+}
+
+bool utils::movePlayerDown(std::shared_ptr<stateNode> node)
+{
+    auto grid = node->gridState;
+    //grid->printGrid();
+    const int SIZE = 2;
+    bool stop = false;
+
+    while (!stop)
+    {
+        
+        for (int i = 0; i < SIZE; i++)
+        {
+            // todo: check if it will fit first
+            int result = grid->get(node->player.x + i, node->player.y + SIZE);
+            if ((result == -1) || (result > 0))
+            {
+                stop = true;
+                break;
+            }
+        }
+        if (!stop)
+        {
+            node->player.y += 1;
+        }
+    }
+   
+    
+
+    
+    // todo: removing the line below causes error, but it should not be required
+    node->pawns[1].position = node->player;
+    refreshGrid(node);
+    return true;
+}
+
+bool utils::movePlayerLeft(std::shared_ptr<stateNode> node)
+{
+    auto grid = node->gridState;
+    //grid->printGrid();
+    const int SIZE = 2;
+    bool stop = false;
+    int count = 0;
+
+    while (!stop)
+    {
+        if (count > 100)
+        {
+            throw "left outbound error";
+        }
+        for (int i = 0; i < SIZE; i++)
+        {
+            int result = grid->get(node->player.x - 1, node->player.y + i);
+            if ((result == -1) || (result > 0))
+            {
+                stop = true;
+                break;
+            }
+        }
+        if (!stop)
+        {
+            node->player.x -= 1;
+        }
+        count++;
+    }
+    
+    
+    
+    node->pawns[1].position = node->player;
+    refreshGrid(node);
+    //grid->printGrid();
+    return true;
+}
+
+bool utils::movePlayerRight(std::shared_ptr<stateNode> node)
+{    
+    auto grid = node->gridState;
+    //grid->printGrid();
+    const int SIZE = 2;
+    bool stop = false;
+    int count = 0;
+
+    while (!stop)
+    {
+        if (count > 100)
+        {
+            throw "left outbound error";
+        }
+        for (int i = 0; i < SIZE; i++)
+        {
+            int result = grid->get(node->player.x + SIZE, node->player.y + i);
+            if ((result == -1) || (result > 0))
+            {
+                stop = true;
+                break;
+            }
+        }
+        if (!stop)
+        {
+            node->player.x += 1;
+        }
+        count++;
+    }
+
+    node->pawns[1].position = node->player;
+    refreshGrid(node);
+    //grid->printGrid();
     return true;
 }
 
 bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
 {
     bool mLoopFlag = true;
+    if (p->id == 4)
+    {
+        bool f = true;
+    }
     // check orientation
     if (p->orientation == HORIZONTAL)
     {
@@ -87,6 +235,7 @@ bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
                 mLoopFlag = false;
             }
         }
+        refreshGrid(node);
         return true;
     }
     else if (p->orientation == VERTICAL)
@@ -103,6 +252,7 @@ bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
                 mLoopFlag = false;
             }
         }
+        refreshGrid(node);
         return true;
     }
     return false;
@@ -153,6 +303,14 @@ bool utils::isSameState(std::shared_ptr<stateNode> a, std::shared_ptr<stateNode>
 {
     std::map<int, pawn>::iterator iter;
     int sameCount = 0;
+
+    auto playerPosA = a->player;
+    auto playerPosB = b->player;
+    if ((playerPosA.x == playerPosB.x) && (playerPosA.y == playerPosB.y))
+    {
+        sameCount++;
+    }
+
     for (iter = a->pawns.begin(); iter != a->pawns.end(); iter++)
     {
         pawn temp_a = iter->second;
@@ -164,7 +322,8 @@ bool utils::isSameState(std::shared_ptr<stateNode> a, std::shared_ptr<stateNode>
         }
     }
     // if all the states are same, return true, else false
-    return (sameCount == a->pawns.size());
+    // added 1 to account for the player check
+    return (sameCount == (a->pawns.size() + 1));
 }
 
 void utils::refreshGrid(std::shared_ptr<stateNode> node)
@@ -173,6 +332,19 @@ void utils::refreshGrid(std::shared_ptr<stateNode> node)
     node->gridState->clearGrid();
     // updating the grid object with the new array
     
+    // paint player to the grid
+    for (int i = node->player.x; i < node->player.x + 2; i++)
+    {
+        for (int j = node->player.y; j < node->player.y + 2; j++)
+        {
+            if ((i < 0) || (j < 0))
+            {
+                break;
+            }
+            node->gridState->set(i, j, 1);
+        }
+    }
+
     // adding pawns to the grid
     //      look for out of bounds, overlap and throw error
     for (std::pair<int, pawn> pObj: node->pawns)
@@ -193,6 +365,20 @@ void utils::refreshGrid(std::shared_ptr<stateNode> node)
             }
         }
     }
+}
+
+std::string utils::getNodeEncoding(std::shared_ptr<stateNode> node)
+{
+    std::string encoding = "player:";
+    encoding += std::to_string(node->player.x) + "-" + std::to_string(node->player.y) + "$";
+    for (auto pawn : node->pawns)
+    {
+        
+        encoding += "p(" + std::to_string(pawn.second.id) + ", " + std::to_string(pawn.second.orientation) + "):";
+        encoding += std::to_string(pawn.second.position.x) + "-" + std::to_string(pawn.second.position.y);
+        encoding += "$";
+    }
+    return encoding;
 }
 
 int utils::getActionNum(pawn* p, int action)
@@ -267,6 +453,7 @@ std::shared_ptr<stateNode> utils::copyNode(std::shared_ptr<stateNode> node)
             coordinates(tempPawn.position.x, tempPawn.position.y)
         );
     }
+
     std::shared_ptr<stateNode> copiedNode = std::make_shared<stateNode>(
         -1,
         -1,
@@ -275,6 +462,8 @@ std::shared_ptr<stateNode> utils::copyNode(std::shared_ptr<stateNode> node)
         gridState,
         pawns
     );
+
+    copiedNode->player = node->player;
 
     
     // updating grid

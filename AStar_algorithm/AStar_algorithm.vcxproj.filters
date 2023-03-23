@@ -58,5 +58,8 @@
     <Text Include="C:\Users\Zakwan\Downloads\rush_hour_problems.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="C:\Users\Zakwan\Downloads\rush_hour_solutions.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

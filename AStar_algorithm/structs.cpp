@@ -1,5 +1,9 @@
 #pragma once
+#include <chrono>
 #include <memory>
+#include <string>
+#include <unordered_map> 
+
 #include "map"
 #include "Grid.h"
 
@@ -8,10 +12,14 @@ const int VERTICAL = 0;
 const int HORIZONTAL = 1;
 const int DOWN = 1;
 const int UP = -1;
-const int RIGHT = 1;
-const int LEFT = -1;
+const int RIGHT = 2;
+const int LEFT = -2;
 const int FORWARD = 11;
 const int BACKWARD = -11;
+
+// evaluation config enums
+const int DEPTH_FACTOR = 4;
+const int MAX_EVAL_VALUE = 10;
 
 // structs
 struct coordinates {
