@@ -8,9 +8,6 @@ o.xx.q.
 ob..ee.
 .bppp..
 
-solution J1 5 el1 fu1 qd2 xu1 xr3 
-A total of 1319 calls were made to IDA with 1310 H-cuts
-There were 12 TT cuts, 60 TTsaves, 17 TTfound
 Solution found in 0.000000 seconds. 
 Mine: 9 seconds
 
@@ -24,9 +21,6 @@ pppor..
 ...xx..
 ...xx..
 
-solution J2 5 ou2 xr2 rd2 cl2 xu3 
-A total of 509 calls were made to IDA with 1810 H-cuts
-There were 11 TT cuts, 35 TTsaves, 15 TTfound
 Solution found in 0.000000 seconds.
 Mine: 0 seconds
 
@@ -40,9 +34,6 @@ cc..bb.
 .hxxj..
 .hxxj..
 
-solution J3 7 bl2 dr2 ju2 xr3 jd1 dl2 xu3 
-A total of 56766 calls were made to IDA with 58559 H-cuts
-There were 7967 TT cuts, 2582 TTsaves, 8503 TTfound
 Solution found in 0.040000 seconds.
 Mine: 34 seconds
 
@@ -56,9 +47,6 @@ ii..h..
 .xxc...
 ...cqqq
 
-solution J4 6 al2 cu5 xr4 hu2 bl2 xu2 
-A total of 1964 calls were made to IDA with 60511 H-cuts
-There were 20 TT cuts, 103 TTsaves, 28 TTfound
 Solution found in 0.000000 seconds.
 Mine: 6 seconds
 
@@ -72,9 +60,6 @@ xx....o
 ..hpc..
 .jjpqqq
 
-solution J5 7 dd1 el1 pu1 ql1 od4 xr5 xd1 
-A total of 19610 calls were made to IDA with 80109 H-cuts
-There were 2690 TT cuts, 1173 TTsaves, 2935 TTfound
 Solution found in 0.010000 seconds.
 Mine: 46 seconds
 
@@ -88,9 +73,6 @@ jjrrr..
 ..f....
 ..f....
 
-solution J6 8 ql2 rr2 hd2 xr5 hu2 al2 rl2 xd2 
-A total of 3682 calls were made to IDA with 83784 H-cuts
-There were 965 TT cuts, 351 TTsaves, 1104 TTfound
 Solution found in 0.000000 seconds.
 Mine: 3 seconds
 
@@ -104,9 +86,6 @@ h = 3
 ...e...
 .......
 
-solution J7 9 au1 bl1 dd1 il2 xl1 xu1 fl5 xd1 xr3 
-A total of 11360 calls were made to IDA with 95135 H-cuts
-There were 4475 TT cuts, 1092 TTsaves, 5045 TTfound
 Solution found in 0.010000 seconds.
 Mine: 10 seconds
 
@@ -120,9 +99,6 @@ dxxqqq.
 ...ebbc
 aa.ooo.
 
-solution J8 8 du1 xu2 ql3 eu1 bl2 pd3 xr4 xd1 
-A total of 57371 calls were made to IDA with 152489 H-cuts
-There were 9265 TT cuts, 3416 TTsaves, 10012 TTfound
 Solution found in 0.040000 seconds.
 Mine: 216 seconds
 
@@ -136,9 +112,6 @@ h = 4
 .boxxqc
 .b.ee.c
 
-solution J9 10 bu5 el3 ou2 qd1 xl3 od3 pd3 rd3 xu2 xr5 
-A total of 2677772 calls were made to IDA with 2830253 H-cuts
-There were 748694 TT cuts, 107775 TTsaves, 783632 TTfound
 Solution found in 1.610000 seconds.
 Mine: 123 seconds
 
@@ -152,474 +125,7 @@ h = 2
 ...p..d
 ...pqqq
 
-solution J10 8 ol2 xl1 pu3 el3 ql4 pd3 rd3 xr4 
-A total of 27356 calls were made to IDA with 2857596 H-cuts
-There were 7316 TT cuts, 1756 TTsaves, 8009 TTfound
 Solution found in 0.010000 seconds.
 Mine: 3 seconds
 
-P B1
-h = 5
-...r.ii
-.aar...
-.h.r..c
-.hjjffc
-...kkee
-..xx.vv
-..xx.vv
-
-solution B1 14 hd3 jl2 kl2 el2 rd1 il4 cu2 ru1 fl2 vu3 xr3 vl1 vu2 xu3 
-A total of 1203437 calls were made to IDA with 4061025 H-cuts
-There were 644078 TT cuts, 87613 TTsaves, 697515 TTfound
-Solution found in 0.830000 seconds.
-
-P B2
-h = 2
-.......
-uu.pppo
-uu.qxxo
-siiqxxo
-shbqrrr
-shb.kk.
-.......
-
-solution B2 13 qd2 ir1 sd1 ud1 pl3 xu1 ir2 qu4 il1 rl1 od3 xr1 xd1 
-A total of 276094 calls were made to IDA with 4337109 H-cuts
-There were 199008 TT cuts, 24790 TTsaves, 219090 TTfound
-Solution found in 0.180000 seconds.
-
-P B3
-h = 4
-...r...
-...ruu.
-c..ruu.
-c..a...
-xx.a.gg
-xxeeff.
-.hhjj..
-
-solution B3 14 cu1 jr1 xu1 el1 ad2 xr1 xu3 gl4 rd2 ud2 xr4 ru2 ul1 xd2 
-A total of 3084096 calls were made to IDA with 7421192 H-cuts
-There were 1539958 TT cuts, 171342 TTsaves, 1635770 TTfound
-Solution found in 2.000000 seconds.
-
-P B4
-h = 3
-.cqqqp.
-.c.j.p.
-vv.j.p.
-vveexx.
-r.h.xx.
-r.h.b..
-rooob..
-
-solution B4 16 xr1 xd1 er2 jd3 vr2 cd4 ql2 vl1 ju4 vu1 el3 bu5 xl2 pd4 xu2 xr2 
-A total of 18755730 calls were made to IDA with 26176913 H-cuts
-There were 8123371 TT cuts, 991636 TTsaves, 8617213 TTfound
-Solution found in 12.180000 seconds.
-
-P B5
-h = 5
-.......
-...f...
-bb.f.jj
-.xxuuh.
-.xxuuh.
-ii.a.gg
-...a...
-
-solution B5 13 fu1 br3 xu3 bl2 ul2 fd2 xr4 fu2 au2 gl2 hd1 jl2 xd2 
-A total of 120964 calls were made to IDA with 26297869 H-cuts
-There were 43799 TT cuts, 10661 TTsaves, 48769 TTfound
-Solution found in 0.080000 seconds.
-
-P B6
-h = 4
-.......
-.......
-.peaao.
-.peffo.
-.prrro.
-.xxqqq.
-.xx....
-
-solution B6 13 eu2 ou1 qr1 rr2 xr1 pd2 al3 fl3 xu3 ql2 rl2 od3 xr3 
-A total of 246528 calls were made to IDA with 26544393 H-cuts
-There were 145259 TT cuts, 18967 TTsaves, 157831 TTfound
-Solution found in 0.170000 seconds.
-
-P B7
-h = 5
-.uu.jj.
-iuuh..a
-i..h..a
-.bb.ff.
-xx.e..c
-xx.evvc
-.dd.vv.
-
-solution B7 14 au1 bl1 fl2 ud1 jl3 hu1 vu5 fr2 eu2 xr4 ed2 fl2 xu2 xr1 
-A total of 12462909 calls were made to IDA with 39007290 H-cuts
-There were 5936528 TT cuts, 651171 TTsaves, 6277598 TTfound
-Solution found in 8.600000 seconds.
-
-P B8
-h = 4
-xx.ppp.
-xx.uu..
-.aauucc
-...qr..
-...qr..
-...qr..
-..hhjj.
-
-solution B8 15 al1 pr1 ul1 ru2 uu1 ar2 xd4 al1 ul1 qu2 xr5 qd2 rd2 cl2 xu2 
-A total of 277101 calls were made to IDA with 39284381 H-cuts
-There were 109883 TT cuts, 21492 TTsaves, 120794 TTfound
-Solution found in 0.180000 seconds.
-
-P B9
-h = 4
-...f...
-..afp..
-.ha.pe.
-.hxxpe.
-jjxxdcc
-..i.d..
-..ibb..
-
-solution B9 16 au1 br2 dd1 xu1 jr2 hd3 jl2 cl3 ed2 pd1 xl2 ad2 fd2 xu2 xr5 xd2 
-A total of 2397850 calls were made to IDA with 41682222 H-cuts
-There were 1326331 TT cuts, 166627 TTsaves, 1430683 TTfound
-Solution found in 1.580000 seconds.
-
-P B10
-h = 5
-.......
-...aff.
-..ra.eq
-..rcceq
-..rgvvq
-xx.gvv.
-xx.....
-
-solution B10 15 qd2 rd2 cl3 ad1 fl4 au1 eu2 gu1 ru4 vu1 xr4 gd2 vl2 xu3 xr1 
-A total of 4223452 calls were made to IDA with 45905671 H-cuts
-There were 2337619 TT cuts, 257006 TTsaves, 2496320 TTfound
-Solution found in 2.770000 seconds.
-
-P I11
-h = 4
-vvc....
-vvc....
-qqquui.
-...uui.
-xxdooo.
-xxd....
-ppp....
-
-solution I11 18 iu2 pr3 dd1 ol1 ur2 ud2 qr4 vd2 vr2 xu4 vl2 cd2 vd1 xr3 cu2 ql4 xd2 xr2 
-A total of 1560964 calls were made to IDA with 47466629 H-cuts
-There were 1078080 TT cuts, 135283 TTsaves, 1182495 TTfound
-Solution found in 1.060000 seconds.
-
-P I12
-h = 3
-...uu..
-...uui.
-..xx.i.
-vvxxooo
-vv.q.bb
-.ccqe..
-...qe..
-
-solution I12 17 ul1 vu3 xl2 ud2 vr2 xu2 ul2 ol2 id1 vr3 xr3 uu1 ol2 xd2 vl2 iu2 xr2 
-A total of 576547 calls were made to IDA with 48043167 H-cuts
-There were 393627 TT cuts, 58519 TTsaves, 439354 TTfound
-Solution found in 0.400000 seconds.
-
-P I13
-h = 5
-ppp.ee.
-.xx.r.c
-.xx.r.c
-.qqqr.a
-...jvva
-h..jvv.
-h.ffooo
-
-solution I13 20 er1 fl1 hu3 ol1 ad2 ru1 qr3 ju4 vl4 xd1 xr1 xd2 ql3 xr2 xu1 xr1 rd1 el1 cu1 xu1 
-A total of 17997214 calls were made to IDA with 66040371 H-cuts
-There were 13535943 TT cuts, 1221231 TTsaves, 14532507 TTfound
-Solution found in 12.860000 seconds.
-
-P I14
-h = 4
-hh.dd..
-.....i.
-qooo.i.
-qxxp...
-qxxp.b.
-rrrp.b.
-.......
-
-solution I14 18 bu1 iu1 or3 pu1 rr4 pd1 qd1 ol4 id1 dr1 pu3 rl2 bd2 xr4 pd1 dl1 iu1 xu1 
-A total of 439175 calls were made to IDA with 66479539 H-cuts
-There were 318290 TT cuts, 40072 TTsaves, 350856 TTfound
-Solution found in 0.300000 seconds.
-
-P I15
-h = 6
-jjhh...
-.uu...g
-auu.r.g
-aiiprcq
-f..prcq
-fxxpvvq
-.xx.vv.
-
-solution I15 21 au1 cu2 gu1 pd1 qd1 ru2 ir4 pu2 xu2 vl3 pd2 rd4 il2 cd3 ur3 uu1 xu2 il3 xr1 xd1 xr3 
-A total of 67122011 calls were made to IDA with 133601543 H-cuts
-There were 39950900 TT cuts, 3043349 TTsaves, 42315801 TTfound
-Solution found in 50.340000 seconds.
-
-P I16
-h = 4
-.hhjj..
-..ff...
-.aavv..
-iiovvq.
-xxoeeq.
-xxodcq.
-.bbdc..
-
-solution I16 19 bl1 fl2 hl1 qd1 vr2 vu2 ar4 ou3 ir5 xu2 el3 od4 xr3 xu1 il4 xd2 al4 xu1 xr2 
-A total of 18051005 calls were made to IDA with 151652536 H-cuts
-There were 11303232 TT cuts, 1270927 TTsaves, 12194096 TTfound
-Solution found in 12.690000 seconds.
-
-P I17
-h = 3
-.......
-oooa...
-pvva...
-pvvcc..
-peeqqq.
-xxrrrkj
-xx.ffkj
-
-solution I17 21 cr1 ad1 ju3 or4 au2 pu2 el1 ql1 vu2 cl4 ku3 fr1 qr2 rr2 xr2 xu3 ql2 rl2 jd2 kd2 xr3 
-A total of 1800523 calls were made to IDA with 153453047 H-cuts
-There were 1253195 TT cuts, 140396 TTsaves, 1363330 TTfound
-Solution found in 1.250000 seconds.
-
-P I18
-h = 3
-j..d.uu
-jhhd.uu
-.xx....
-.xxpppc
-...rrrc
-vv.f..a
-vv.f..a
-
-solution I18 21 ul1 cu3 pr1 rr1 fu2 vr4 fd1 jd5 hl1 xd3 pl4 fu2 rl4 vu2 xr3 fd2 dd2 ul2 vu3 xu3 xr1 
-A total of 9265330 calls were made to IDA with 162718373 H-cuts
-There were 6656937 TT cuts, 665430 TTsaves, 7183367 TTfound
-Solution found in 6.820000 seconds.
-
-P I19
-h = 3
-i......
-iooo...
-pppee..
-.......
-.aarrr.
-hxxcvvf
-hxxcvvf
-
-solution I19 24 er1 fu3 or3 rr1 cu5 pr1 hu3 al1 xl1 vl2 vu2 xr5 vd2 ar1 hd3 al1 pl1 vl1 cd5 el1 ol1 fu2 rl2 xu3 
-A total of 2342876 calls were made to IDA with 165061243 H-cuts
-There were 1895556 TT cuts, 211140 TTsaves, 2084981 TTfound
-Solution found in 1.730000 seconds.
-
-P I20
-h = 3
-.....uu
-.bdd.uu
-.b.p...
-ooop..r
-...pxxr
-...exxr
-cc.eqqq
-
-solution I20 24 ul1 ud2 dr2 pu2 eu1 ql1 rd1 ur1 or2 bd3 ol2 ul1 ru1 qr1 ed1 pd2 dl3 pu1 eu1 ql1 rd1 uu2 xu2 xr1 
-A total of 141476 calls were made to IDA with 165202712 H-cuts
-There were 104256 TT cuts, 17034 TTsaves, 119123 TTfound
-Solution found in 0.100000 seconds.
-
-P A21
-h = 5
-..uu...
-..uu.cc
-bihhvvq
-biajvvq
-ddajffq
-..xx.ee
-..xx...
-
-solution A21 23 bu2 iu2 xl2 ad2 jd2 dr2 xu3 dl2 au2 ju2 el5 ad2 jd2 fl2 qd2 vd3 fr2 hr2 xr2 xd1 hl4 xu1 xr3 
-A total of 13491565 calls were made to IDA with 178694265 H-cuts
-There were 9244499 TT cuts, 1149518 TTsaves, 10129778 TTfound
-Solution found in 10.200000 seconds.
-
-P A22
-h = 4
-.......
-.pppc..
-.euuc..
-qeuuff.
-qaahjjg
-qxxhvvg
-.xx.vv.
-
-solution A22 23 gu3 fr1 hd1 jr1 qd1 vr1 cd4 ar2 fl1 gd1 pr3 eu2 uu2 xu3 xr1 ed4 ul2 xu1 fl4 xd1 pl1 gu2 xr3 
-A total of 14608245 calls were made to IDA with 193302501 H-cuts
-There were 9859125 TT cuts, 1163665 TTsaves, 10738439 TTfound
-Solution found in 10.950000 seconds.
-
-P A23
-h = 3
-.cvveep
-.cvv.qp
-....rqp
-...srq.
-..osr..
-.ios.xx
-.iobbxx
-
-solution A23 28 cd1 iu1 qd1 vd1 el4 vu1 vr2 ou4 bl3 su3 xl3 pd4 qd2 rd2 xu2 br2 id1 xl2 od1 sd1 er2 cu1 xu1 iu1 bl2 od3 sd3 xr5 
-A total of 235089148 calls were made to IDA with 428391642 H-cuts
-There were 174592564 TT cuts, 10367669 TTsaves, 183518282 TTfound
-Solution found in 166.660000 seconds.
-
-P A24
-h = 5
-....aii
-roooa.c
-rxxqddc
-rxxquu.
-pppquu.
-vv..hb.
-vv..hb.
-
-solution A24 23 cd4 dr1 qd1 ur1 ad3 or3 vr1 xu2 dl4 au1 qu2 uu1 pr4 qd3 rd2 dl1 xr1 xd2 il3 ol3 au2 uu2 xr3 
-A total of 3675785 calls were made to IDA with 432067418 H-cuts
-There were 2877886 TT cuts, 283024 TTsaves, 3120593 TTfound
-Solution found in 2.720000 seconds.
-
-P A25
-h = 2
-.kf..a.
-.kfcca.
-uuxx.vv
-uuxx.vv
-.jgeeh.
-.jg..h.
-.......
-
-solution A25 22 hd1 er2 xr1 xd3 ur3 gu1 ju1 xl2 ud3 el2 vl2 hu2 ur2 xr2 gd2 jd2 el2 vl2 xu3 ul2 hd1 xr2 
-A total of 3353428 calls were made to IDA with 435420837 H-cuts
-There were 2376097 TT cuts, 331051 TTsaves, 2643235 TTfound
-Solution found in 2.440000 seconds.
-
-P A26
-h = 4
-xx...uu
-xxooouu
-.q..bii
-.q..b..
-.qee.ff
-vvc.a..
-vvc.a..
-
-solution A26 25 er1 cu3 el1 vr2 qd2 xd2 ol1 bu2 au2 vr3 ad2 er1 cd2 il3 bd2 ud2 or3 xu2 il2 xr2 xd2 ol3 bu2 uu2 xr3 
-A total of 231324 calls were made to IDA with 435652154 H-cuts
-There were 161184 TT cuts, 32831 TTsaves, 188896 TTfound
-Solution found in 0.180000 seconds.
-
-P A27
-h = 6
-..orrr.
-.ioaavv
-.iouuvv
-.xxuuqc
-.xxddqc
-..pppq.
-.......
-
-solution A27 29 cd1 iu1 pl2 qd1 rr1 vd1 ar2 xl1 xu1 dl3 ud2 vl2 cu1 qu2 vu1 uu1 pr4 ul1 ud2 ul2 od4 vl1 vu1 xr3 ou2 pl2 cd1 qd2 xr2 
-A total of 20178765 calls were made to IDA with 455830912 H-cuts
-There were 15033890 TT cuts, 1528212 TTsaves, 16308564 TTfound
-Solution found in 14.020000 seconds.
-
-P A28
-h = 4
-xxrrr..
-xxuusss
-p.uuvv.
-pdo.vv.
-pdoiq..
-eeoiqc.
-..bbqc.
-
-solution A28 27 iu1 rr2 uu1 ou1 er2 dd1 pd2 vr1 qu2 xd2 ul2 rl2 sl2 vu2 cu2 br3 er3 id1 od2 qd2 xr2 ud2 rl2 sl2 vl2 cu3 xr3 
-A total of 5948070 calls were made to IDA with 461778976 H-cuts
-There were 4747532 TT cuts, 503759 TTsaves, 5193244 TTfound
-Solution found in 4.340000 seconds.
-
-P A29
-h = 3
-uuddp..
-uuiip..
-bbxxp..
-aaxxee.
-rrrcvv.
-...cvvj
-kk....j
-
-solution A29 28 cd1 er1 vd1 pd2 dr2 ir3 pu1 rr4 cu1 kr2 xu2 ar2 br2 ud5 al2 bl2 cu2 rl4 cd2 pd1 xd2 dl4 il5 xu2 xr3 pu2 el2 xd2 
-A total of 33891556 calls were made to IDA with 495670519 H-cuts
-There were 24322142 TT cuts, 2580118 TTsaves, 26400786 TTfound
-Solution found in 25.050000 seconds.
-
-P A30
-h = 3
-.......
-..ddh..
-xxi.hvv
-xxiaavv
-.oppps.
-.oqqqs.
-.orrrs.
-
-solution A30 26 vu1 ar2 hd1 dr1 iu2 xr2 ou3 pl1 ql1 rl1 hd3 pr1 od1 xr1 id2 dl2 xu2 al2 vd1 xr2 dr2 iu1 ou2 al2 vl2 xd2 
-A total of 954536 calls were made to IDA with 496625046 H-cuts
-There were 720975 TT cuts, 100423 TTsaves, 807498 TTfound
-Solution found in 0.680000 seconds.
-
-P E31
-h = 4
-ppp.c..
-e.q.c..
-e.q..ii
-vvq....
-vv.rrro
-xxuu..o
-xxuubbo
-
-solution E31 28 il1 ou3 br1 pr1 eu1 ur1 vu1 rl3 uu1 bl2 ur2 ud1 rr3 qd2 vd1 il4 qu2 rl1 uu1 br2 xr3 vd2 rl2 xu3 bl1 ul1 od3 xr2 
-A total of 8146402 calls were made to IDA with 504771439 H-cuts
-There were 5527715 TT cuts, 786450 TTsaves, 6139722 TTfound
-Solution found in 5.920000 seconds.
 
