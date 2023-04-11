@@ -10,17 +10,7 @@
 
 struct CompareNode {
 	bool operator()(std::shared_ptr<stateNode> a, std::shared_ptr<stateNode> b) const {
-		if (a->cost > b->cost)
-		{
-			return true;
-		}
-		else if (a->cost == b->cost)
-		{
-			return a->stateEvaluationValue < b->stateEvaluationValue;
-		}
-		return false;
-
-		// return a->stateEvaluationValue < b->stateEvaluationValue;
+		return a->stateEvaluationValue < b->stateEvaluationValue;
 	}
 };
 
@@ -34,7 +24,7 @@ public:
 
 private:
 	std::shared_ptr<stateNode> root;
-	std::priority_queue<std::shared_ptr<stateNode>, std::vector<std::shared_ptr<stateNode>>> openList;
+	std::priority_queue<std::shared_ptr<stateNode>, std::vector<std::shared_ptr<stateNode>>, CompareNode> openList;
 	std::vector<std::shared_ptr<stateNode>> closedList;
 	std::unordered_map<std::string, bool> closedHash;
 	std::unordered_map<std::string, bool> openHash;
