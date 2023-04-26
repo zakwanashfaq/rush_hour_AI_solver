@@ -19,8 +19,6 @@ struct CompareNode {
 			return a->stateEvaluationValue < b->stateEvaluationValue;
 		}
 		return false;
-
-		// return a->stateEvaluationValue < b->stateEvaluationValue;
 	}
 };
 
@@ -31,8 +29,7 @@ class aStar
 public:
 	aStar(std::string inputFileName);
 	void startSearch();
-
-private:
+protected:
 	std::shared_ptr<stateNode> root;
 	std::priority_queue<std::shared_ptr<stateNode>, std::vector<std::shared_ptr<stateNode>>, CompareNode> openList;
 	std::vector<std::shared_ptr<stateNode>> closedList;

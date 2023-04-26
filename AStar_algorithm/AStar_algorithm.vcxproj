@@ -130,12 +130,14 @@
     <ClCompile Include="aStar.cpp" />
     <ClCompile Include="AStar_algorithm.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="IDA.cpp" />
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aStar.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="IDA.h" />
     <ClInclude Include="structs.cpp" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
