@@ -5,6 +5,9 @@
 #include <cmath>
 #include <queue>
 #include <string>
+#include <iostream>
+#include <fstream>
+#include <stack>
 #include "structs.cpp"
 #include "utils.h"
 

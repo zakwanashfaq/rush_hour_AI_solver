@@ -1,7 +1,4 @@
 #include "aStar.h"
-#include <iostream>
-#include <fstream>
-#include <stack>
 
 aStar::aStar(std::string inputFileName)
 {
