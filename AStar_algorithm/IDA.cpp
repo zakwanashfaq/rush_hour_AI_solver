@@ -84,7 +84,7 @@ void IDAStar::startSearch()
 
 std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost, int threshold)
 {
-    // g_cost is distance moved, node->cost is recursive depth
+    // g_cost is distance moved to get ti this state, node->cost is recursive depth
     // evaluateState(node) is manhattan distance from current node to goal node
     int f_cost = g_cost + evaluateState(node) + node->cost; 
 
