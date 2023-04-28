@@ -68,7 +68,7 @@ void IDAStar::startSearch()
             std::cout << "/////////////////////////////////" << std::endl;
             return;
 		}
-		else if (threshold > 100)
+		else if (threshold > 1500)
 		{
             std::cout << "Max threshold reached. Unable to find Solution" << std::endl;
 			return;
@@ -84,7 +84,11 @@ void IDAStar::startSearch()
 
 std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost, int threshold)
 {
-    int f_cost = g_cost + evaluateState(node);
+    // g_cost is distance moved, node->cost is recursive depth
+    // evaluateState(node) is manhattan distance from current node to goal node
+    int f_cost = g_cost + evaluateState(node) + node->cost; 
+
+    nodesSearched++;
 
     std::string encodedState = utils::getNodeEncoding(node);
     if (closedHash[encodedState])
