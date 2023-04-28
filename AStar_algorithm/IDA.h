@@ -27,7 +27,7 @@ public:
 	IDAStar(std::string inputFileName);
 	void startSearch();
 protected:
-	std::shared_ptr<RT> search(std::shared_ptr<stateNode> node, int g_cost, int threshold);
+	std::shared_ptr<RT> search(std::shared_ptr<stateNode> node, int g_cost, int threshold, std::unordered_map<std::string, bool> hash);
 	int evaluateState(std::shared_ptr<stateNode> node);
 };
 

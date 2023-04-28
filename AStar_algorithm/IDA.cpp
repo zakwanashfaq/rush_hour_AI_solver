@@ -12,10 +12,13 @@ void IDAStar::startSearch()
 {
 	// aStar::startSearch();
 	int threshold = evaluateState(root);
-
+    std::cout << std::endl;
+    utils::refreshGrid(root);
+    root->gridState->printGrid();
 	while (true)
 	{
-		std::shared_ptr<RT> result = search(root, 0, threshold);
+        std::unordered_map<std::string, bool> hash = std::unordered_map<std::string, bool>();
+		std::shared_ptr<RT> result = search(root, 0, threshold, hash);
 
 		if (result->result == "found")
 		{
@@ -68,7 +71,7 @@ void IDAStar::startSearch()
             std::cout << "/////////////////////////////////" << std::endl;
             return;
 		}
-		else if (threshold > 1500)
+		else if (threshold > 500)
 		{
             std::cout << "Max threshold reached. Unable to find Solution" << std::endl;
 			return;
@@ -82,22 +85,22 @@ void IDAStar::startSearch()
 	}
 }
 
-std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost, int threshold)
+std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost, int threshold, std::unordered_map<std::string, bool> hash)
 {
     // g_cost is distance moved to get ti this state, node->cost is recursive depth
     // evaluateState(node) is manhattan distance from current node to goal node
     int f_cost = g_cost + evaluateState(node) + node->cost; 
 
     nodesSearched++;
-
     std::string encodedState = utils::getNodeEncoding(node);
-    if (closedHash[encodedState])
+    std::unordered_map<std::string, bool> temphash = std::unordered_map<std::string, bool>(hash);
+    if (temphash[encodedState])
     {
         return std::make_shared<RT>("null", f_cost);;
     }
     else
     {
-        closedHash[encodedState] = true;
+        temphash[encodedState] = true;
     }
 	
 
@@ -137,7 +140,7 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
         {
 
         }
-        std::shared_ptr<RT> result = search(playerUpNode, g_cost + distance, threshold);
+        std::shared_ptr<RT> result = search(playerUpNode, g_cost + distance, threshold, temphash);
         if (result->result == "found")
         {
             return result;
@@ -163,7 +166,7 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
         {
 
         }
-        std::shared_ptr<RT> result = search(playerDownNode, g_cost + distance, threshold);
+        std::shared_ptr<RT> result = search(playerDownNode, g_cost + distance, threshold, temphash);
         if (result->result == "found")
         {
             return result;
@@ -189,7 +192,7 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
         {
 
         }
-        std::shared_ptr<RT> result = search(playerLeftNode, g_cost + distance, threshold);
+        std::shared_ptr<RT> result = search(playerLeftNode, g_cost + distance, threshold, temphash);
         if (result->result == "found")
         {
             return result;
@@ -215,7 +218,7 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
         {
 
         }
-        std::shared_ptr<RT> result = search(playerRightNode, g_cost + distance, threshold);
+        std::shared_ptr<RT> result = search(playerRightNode, g_cost + distance, threshold, temphash);
         if (result->result == "found")
         {
             return result;
@@ -255,7 +258,7 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
             {
 
             }
-            std::shared_ptr<RT> result = search(newForwardNode, g_cost + distance, threshold);
+            std::shared_ptr<RT> result = search(newForwardNode, g_cost + distance, threshold, temphash);
             if (result->result == "found")
             {
                 return result;
@@ -296,7 +299,7 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
 
             }
                 
-            std::shared_ptr<RT> result2 = search(newBackwardNode, g_cost + distance, threshold);
+            std::shared_ptr<RT> result2 = search(newBackwardNode, g_cost + distance, threshold, temphash);
             if (result2->result == "found")
             {
                 return result2;
