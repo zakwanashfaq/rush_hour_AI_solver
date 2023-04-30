@@ -235,12 +235,8 @@ bool utils::movePlayerRight(std::shared_ptr<stateNode> node)
 
 bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
 {
-    coordinates initialPlayerPos(p->position.x, p->position.y);
+    coordinates initialPawnPos(p->position.x, p->position.y);
     bool mLoopFlag = true;
-    if (p->id == 4)
-    {
-        bool f = true;
-    }
     // check orientation
     if (p->orientation == HORIZONTAL)
     {
@@ -257,7 +253,6 @@ bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
             }
         }
         refreshGrid(node);
-        return true;
     }
     else if (p->orientation == VERTICAL)
     {
@@ -274,9 +269,8 @@ bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
             }
         }
         refreshGrid(node);
-        return true;
     }
-    if ((p->position.x == initialPlayerPos.x) && (p->position.y == initialPlayerPos.y))
+    if ((p->position.x == initialPawnPos.x) && (p->position.y == initialPawnPos.y))
     {
         return false;
     }
@@ -285,7 +279,7 @@ bool utils::moveForward(pawn* p, std::shared_ptr<stateNode> node)
 
 bool utils::moveBackward(pawn* p, std::shared_ptr<stateNode> node)
 {
-    coordinates initialPlayerPos(p->position.x, p->position.y);
+    coordinates initialPawnPos(p->position.x, p->position.y);
     bool mLoopFlag = true;
     // check orientation
     if (p->orientation == HORIZONTAL)
@@ -303,7 +297,6 @@ bool utils::moveBackward(pawn* p, std::shared_ptr<stateNode> node)
             }
         }
         refreshGrid(node);
-        return true;
     }
     else if (p->orientation == VERTICAL)
     {
@@ -320,9 +313,8 @@ bool utils::moveBackward(pawn* p, std::shared_ptr<stateNode> node)
             }
         }
         refreshGrid(node);
-        return true;
     }
-    if ((p->position.x == initialPlayerPos.x) && (p->position.y == initialPlayerPos.y))
+    if ((p->position.x == initialPawnPos.x) && (p->position.y == initialPawnPos.y))
     {
         return false;
     }
