@@ -101,14 +101,14 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
         uniqueHash[encodedState] = true;
     }
     
-    /*if (temphash[encodedState])
+    if (temphash[encodedState])
     {
         return std::make_shared<RT>("null", f_cost);;
     }
     else
     {
         temphash[encodedState] = true;
-    }*/
+    }
 	
 
 	if (f_cost > threshold)
