@@ -20,7 +20,7 @@ void IDAStar::startSearch()
 	{
         std::unordered_map<std::string, bool> hash = std::unordered_map<std::string, bool>();
 		std::shared_ptr<RT> result = search(root, 0, threshold, hash);
-        std::cout << "Threshold: " << threshold << std::endl;
+        // std::cout << "Threshold: " << threshold << std::endl;
 		if (result->result == "found")
 		{
             inProgress = false;
@@ -67,8 +67,9 @@ void IDAStar::startSearch()
             }
 
             std::cout << "/////////////////////////////////" << std::endl;
+            std::cout << "Unique Nodes Searched: " << uniqueHash.size() << std::endl;
             std::cout << "Nodes Searched: " << nodesSearched << std::endl;
-            std::cout << "Max depth traversed: " << depth << std::endl;
+            std::cout << "Max depth traversed: " << threshold << std::endl;
             std::cout << "/////////////////////////////////" << std::endl;
             return;
 		}
@@ -90,19 +91,24 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
 {
     // g_cost is distance moved to get ti this state, node->cost is recursive depth
     // evaluateState(node) is manhattan distance from current node to goal node
-    int f_cost = g_cost + evaluateState(node) + node->cost; 
-
+    int f_cost = g_cost + evaluateState(node);
+    
     nodesSearched++;
     std::string encodedState = utils::getNodeEncoding(node);
     std::unordered_map<std::string, bool> temphash = std::unordered_map<std::string, bool>(hash);
-    if (temphash[encodedState])
+    if (!uniqueHash[encodedState])
+    {
+        uniqueHash[encodedState] = true;
+    }
+    
+    /*if (temphash[encodedState])
     {
         return std::make_shared<RT>("null", f_cost);;
     }
     else
     {
         temphash[encodedState] = true;
-    }
+    }*/
 	
 
 	if (f_cost > threshold)
@@ -136,12 +142,7 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
         playerUpNode->cost = node->cost + 1;
         playerUpNode->stateEvaluationValue = evaluateState(playerUpNode);
 
-        int distance = std::abs(playerUpNode->player.x - node->player.x) + std::abs(playerUpNode->player.y - node->player.y);
-        /*if (distance > 0)
-        {
-
-        }*/
-        std::shared_ptr<RT> result = search(playerUpNode, g_cost + distance, threshold, temphash);
+        std::shared_ptr<RT> result = search(playerUpNode, g_cost + 1, threshold, temphash);
         if (result->result == "found")
         {
             return result;
@@ -161,13 +162,8 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
         playerDownNode->action.actionTaken = DOWN;
         playerDownNode->cost = node->cost + 1;
         playerDownNode->stateEvaluationValue = evaluateState(playerDownNode);
-        
-        int distance = std::abs(playerDownNode->player.x - node->player.x) + std::abs(playerDownNode->player.y - node->player.y);
-        /*if (distance > 0)
-        {
 
-        }*/
-        std::shared_ptr<RT> result = search(playerDownNode, g_cost + distance, threshold, temphash);
+        std::shared_ptr<RT> result = search(playerDownNode, g_cost + 1, threshold, temphash);
         if (result->result == "found")
         {
             return result;
@@ -188,12 +184,7 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
         playerLeftNode->cost = node->cost + 1;
         playerLeftNode->stateEvaluationValue = evaluateState(playerLeftNode);
 
-        int distance = std::abs(playerLeftNode->player.x - node->player.x) + std::abs(playerLeftNode->player.y - node->player.y);
-        /*if (distance > 0)
-        {
-
-        }*/
-        std::shared_ptr<RT> result = search(playerLeftNode, g_cost + distance, threshold, temphash);
+        std::shared_ptr<RT> result = search(playerLeftNode, g_cost + 1, threshold, temphash);
         if (result->result == "found")
         {
             return result;
@@ -214,12 +205,7 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
         playerRightNode->cost = node->cost + 1;
         playerRightNode->stateEvaluationValue = evaluateState(playerRightNode);
         
-        int distance = std::abs(playerRightNode->player.x - node->player.x) + std::abs(playerRightNode->player.y - node->player.y);
-        /*if (distance > 0)
-        {
-
-        }*/
-        std::shared_ptr<RT> result = search(playerRightNode, g_cost + distance, threshold, temphash);
+        std::shared_ptr<RT> result = search(playerRightNode, g_cost + 1, threshold, temphash);
         if (result->result == "found")
         {
             return result;
@@ -233,14 +219,13 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
         }
     }
 
-    for (std::pair<int, pawn> pawnObj : node->pawns)
+    for (const std::pair<int, pawn> pawnObj : node->pawns)
     {
         pawn currentPawn = pawnObj.second;
         // forward move
         // a copy of currentNode, and altered to form new node
         std::shared_ptr<stateNode> newForwardNode = utils::copyNode(node);
-        coordinates initialPawnPos1(newForwardNode->pawns[pawnObj.second.id].position.x, newForwardNode->pawns[pawnObj.second.id].position.y);
-
+        
         bool mForward = utils::moveForward(&newForwardNode->pawns[currentPawn.id], newForwardNode);
         if (mForward)
         {
@@ -255,15 +240,7 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
             }
             newForwardNode->cost = node->cost + 1;
             newForwardNode->stateEvaluationValue = evaluateState(newForwardNode);
-
-            coordinates finalPawnPos1(newForwardNode->pawns[pawnObj.second.id].position.x, newForwardNode->pawns[pawnObj.second.id].position.y);
-
-            int distance = std::abs(initialPawnPos1.x - finalPawnPos1.x) + std::abs(initialPawnPos1.y - finalPawnPos1.y);
-            /*if (distance > 0)
-            {
-
-            }*/
-            std::shared_ptr<RT> result = search(newForwardNode, g_cost + distance, threshold, temphash);
+            std::shared_ptr<RT> result = search(newForwardNode, g_cost + 1, threshold, temphash);
             if (result->result == "found")
             {
                 return result;
@@ -282,7 +259,6 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
         //move pawn backward
         // a copy of currentNode, and altered to form new node
         std::shared_ptr<stateNode> newBackwardNode = utils::copyNode(node);
-        coordinates initialPawnPos2(newBackwardNode->pawns[pawnObj.second.id].position.x, newBackwardNode->pawns[pawnObj.second.id].position.y);
         bool mBackward = utils::moveBackward(&newBackwardNode->pawns[pawnObj.second.id], newBackwardNode);
         
         if (mBackward)
@@ -298,15 +274,8 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
             }
             newBackwardNode->cost = node->cost + 1;
             newBackwardNode->stateEvaluationValue = evaluateState(newBackwardNode);
-
-            coordinates finalPawnPos2(newBackwardNode->pawns[pawnObj.second.id].position.x, newBackwardNode->pawns[pawnObj.second.id].position.y);
-            int distance = std::abs(initialPawnPos2.x - finalPawnPos2.x) + std::abs(initialPawnPos2.y - finalPawnPos2.y);
-            /*if (distance > 0)
-            {
-
-            }*/
                 
-            std::shared_ptr<RT> result2 = search(newBackwardNode, g_cost + distance, threshold, temphash);
+            std::shared_ptr<RT> result2 = search(newBackwardNode, g_cost + 1, threshold, temphash);
             if (result2->result == "found")
             {
                 return result2;
@@ -333,9 +302,8 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
 int IDAStar::evaluateState(std::shared_ptr<stateNode> node)
 {
     coordinates player = node->player;
-    double distance = std::abs(goal.x - player.x) + std::abs(goal.y - player.y);
-    int score = MAX_EVAL_VALUE / distance;
+    int distance = std::abs(goal.x - player.x) + std::abs(goal.y - player.y);
 
-    return score;
+    return distance;
 }
 

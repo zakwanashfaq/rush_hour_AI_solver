@@ -150,6 +150,7 @@ void aStar::searchIteration()
             return;
         }
         std::string encodedNode = utils::getNodeEncoding(currentNode);
+        uniqueHash[encodedNode] = true;
         closedList.push_back(currentNode);
         closedHash[encodedNode] = true;
 
@@ -207,9 +208,11 @@ void aStar::searchIteration()
             }
             
             std::cout << "/////////////////////////////////" <<std::endl;
+            std::cout << "Unique Nodes Searched: " << uniqueHash.size() << std::endl;
             std::cout << "Nodes Searched: " << nodesSearched << std::endl;
             std::cout << "Max depth traversed: " << depth << std::endl;
             std::cout << "/////////////////////////////////" << std::endl;
+            uniqueHash.clear();
             return;
         }
 
