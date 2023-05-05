@@ -11,7 +11,7 @@ IDAStar::IDAStar(std::string inputFileName): aStar(inputFileName)
 void IDAStar::startSearch()
 {
 	// aStar::startSearch();
-	int threshold = evaluateState(root);
+    int threshold = evaluateState(root);
     std::cout << std::endl;
     utils::refreshGrid(root);
     root->gridState->printGrid();
@@ -109,6 +109,8 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
     {
         temphash[encodedState] = true;
     }
+
+    
 	
 
 	if (f_cost > threshold)
@@ -139,8 +141,6 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
     {
         playerUpNode->action.pawnID = 1;
         playerUpNode->action.actionTaken = UP;
-        playerUpNode->cost = node->cost + 1;
-        playerUpNode->stateEvaluationValue = evaluateState(playerUpNode);
 
         std::shared_ptr<RT> result = search(playerUpNode, g_cost + 1, threshold, temphash);
         if (result->result == "found")
@@ -160,8 +160,6 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
     {
         playerDownNode->action.pawnID = 1;
         playerDownNode->action.actionTaken = DOWN;
-        playerDownNode->cost = node->cost + 1;
-        playerDownNode->stateEvaluationValue = evaluateState(playerDownNode);
 
         std::shared_ptr<RT> result = search(playerDownNode, g_cost + 1, threshold, temphash);
         if (result->result == "found")
@@ -181,8 +179,6 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
     {
         playerLeftNode->action.pawnID = 1;
         playerLeftNode->action.actionTaken = LEFT;
-        playerLeftNode->cost = node->cost + 1;
-        playerLeftNode->stateEvaluationValue = evaluateState(playerLeftNode);
 
         std::shared_ptr<RT> result = search(playerLeftNode, g_cost + 1, threshold, temphash);
         if (result->result == "found")
@@ -202,8 +198,6 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
     {
         playerRightNode->action.pawnID = 1;
         playerRightNode->action.actionTaken = RIGHT;
-        playerRightNode->cost = node->cost + 1;
-        playerRightNode->stateEvaluationValue = evaluateState(playerRightNode);
         
         std::shared_ptr<RT> result = search(playerRightNode, g_cost + 1, threshold, temphash);
         if (result->result == "found")
@@ -238,8 +232,6 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
             {
                 newForwardNode->action.actionTaken = DOWN;
             }
-            newForwardNode->cost = node->cost + 1;
-            newForwardNode->stateEvaluationValue = evaluateState(newForwardNode);
             std::shared_ptr<RT> result = search(newForwardNode, g_cost + 1, threshold, temphash);
             if (result->result == "found")
             {
@@ -272,8 +264,6 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
             {
                 newBackwardNode->action.actionTaken = UP;
             }
-            newBackwardNode->cost = node->cost + 1;
-            newBackwardNode->stateEvaluationValue = evaluateState(newBackwardNode);
                 
             std::shared_ptr<RT> result2 = search(newBackwardNode, g_cost + 1, threshold, temphash);
             if (result2->result == "found")
@@ -291,11 +281,6 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
         
     }
 
-    // check if min_exceeded_value is infinite
-    if (min_exceeded_value == INFINITY)
-    {
-        return std::make_shared<RT>("null", min_exceeded_value);
-    }
     return std::make_shared<RT>("exceeded", min_exceeded_value);
 }
 
@@ -304,6 +289,6 @@ int IDAStar::evaluateState(std::shared_ptr<stateNode> node)
     coordinates player = node->player;
     int distance = std::abs(goal.x - player.x) + std::abs(goal.y - player.y);
 
-    return distance;
+    return distance/2;
 }
 
