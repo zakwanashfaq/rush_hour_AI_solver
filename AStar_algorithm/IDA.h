@@ -24,11 +24,14 @@ struct RT
 class IDAStar: public aStar
 {
 public:
-	IDAStar(std::string inputFileName);
+	IDAStar(std::string inputFileName, bool customEvaluation=false);
 	void startSearch();
 protected:
 	std::shared_ptr<RT> search(std::shared_ptr<stateNode> node, int g_cost, int threshold, std::unordered_map<std::string, bool> hash);
 	int evaluateState(std::shared_ptr<stateNode> node);
+	int evaluateStateCustom(std::shared_ptr<stateNode> node);
+private:
+	bool useCustomEvaluation;
 };
 
 

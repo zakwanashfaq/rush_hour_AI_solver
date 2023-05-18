@@ -39,21 +39,29 @@ void testCases()
 
 int main()
 {
-    auto startTime = std::chrono::high_resolution_clock::now();
-    aStar * searchObject = new aStar("input.txt");
-    searchObject->startSearch();
-    auto endTime = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
-    std::cout << "Time taken A*: " << duration << " microseconds" << " ";
-    std::cout << (duration / 1000000) << " seconds" << std::endl;
+    //auto startTime = std::chrono::high_resolution_clock::now();
+    //aStar * searchObject = new aStar("input.txt");
+    //searchObject->startSearch();
+    //auto endTime = std::chrono::high_resolution_clock::now();
+    //auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
+    //std::cout << "Time taken A*: " << duration << " microseconds" << " ";
+    //std::cout << (duration / 1000000) << " seconds" << std::endl;
 
     auto startTime2 = std::chrono::high_resolution_clock::now();
-    IDAStar* searchObject2 = new IDAStar("input.txt");
+    IDAStar* searchObject2 = new IDAStar("input.txt", false);
     searchObject2->startSearch();
     auto endTime2 = std::chrono::high_resolution_clock::now();
     auto duration2 = std::chrono::duration_cast<std::chrono::microseconds>(endTime2 - startTime2).count();
     std::cout << "Time taken IDA*: " << duration2 << " microseconds" << " ";
     std::cout << (duration2 / 1000000) << " seconds" << std::endl;
+
+    auto startTime3 = std::chrono::high_resolution_clock::now();
+    IDAStar* searchObject3 = new IDAStar("input.txt", true);
+    searchObject3->startSearch();
+    auto endTime3 = std::chrono::high_resolution_clock::now();
+    auto duration3 = std::chrono::duration_cast<std::chrono::microseconds>(endTime3 - startTime3).count();
+    std::cout << "Time taken IDA* (Custom Heuristic): " << duration3 << " microseconds" << " ";
+    std::cout << (duration3 / 1000000) << " seconds" << std::endl;
     
     return 1;
 }

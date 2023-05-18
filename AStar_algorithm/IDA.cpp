@@ -3,15 +3,15 @@
 
 
 
-IDAStar::IDAStar(std::string inputFileName): aStar(inputFileName)
+IDAStar::IDAStar(std::string inputFileName, bool customEvaluation): aStar(inputFileName)
 {
-	
+    useCustomEvaluation = customEvaluation;
 }
 
 void IDAStar::startSearch()
 {
 	// aStar::startSearch();
-    int threshold = evaluateState(root);
+    int threshold = useCustomEvaluation ? evaluateStateCustom(root) : evaluateState(root);
     std::cout << std::endl;
     utils::refreshGrid(root);
     root->gridState->printGrid();
@@ -91,7 +91,8 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
 {
     // g_cost is distance moved to get ti this state, node->cost is recursive depth
     // evaluateState(node) is manhattan distance from current node to goal node
-    int f_cost = g_cost + evaluateState(node);
+    int stateEvaluationValue = useCustomEvaluation ? evaluateStateCustom(root) : evaluateState(root);
+    int f_cost = g_cost + stateEvaluationValue;
     
     std::string encodedState = utils::getNodeEncoding(node);
     std::unordered_map<std::string, bool> temphash = std::unordered_map<std::string, bool>(hash);
@@ -288,5 +289,15 @@ int IDAStar::evaluateState(std::shared_ptr<stateNode> node)
     int distance = std::abs(goal.x - player.x) + std::abs(goal.y - player.y);
 
     return distance/2; 
+}
+
+int IDAStar::evaluateStateCustom(std::shared_ptr<stateNode> node)
+{
+    coordinates player = node->player;
+    int distance = sqrt(pow(std::abs(goal.x - player.x), 2) + pow(std::abs(goal.y - player.y), 2));
+    int score = distance;
+    score += (node->cost * DEPTH_FACTOR);
+
+    return score;
 }
 
