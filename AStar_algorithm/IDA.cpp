@@ -93,7 +93,6 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
     // evaluateState(node) is manhattan distance from current node to goal node
     int f_cost = g_cost + evaluateState(node);
     
-    nodesSearched++;
     std::string encodedState = utils::getNodeEncoding(node);
     std::unordered_map<std::string, bool> temphash = std::unordered_map<std::string, bool>(hash);
     if (!uniqueHash[encodedState])
@@ -103,15 +102,12 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
     
     if (temphash[encodedState])
     {
-        return std::make_shared<RT>("null", f_cost);;
+        return std::make_shared<RT>("visited", f_cost);;
     }
     else
     {
         temphash[encodedState] = true;
     }
-
-    
-	
 
 	if (f_cost > threshold)
 	{
@@ -122,6 +118,8 @@ std::shared_ptr<RT> IDAStar::search(std::shared_ptr<stateNode> node, int g_cost,
 	{
 		return std::make_shared<RT>("found", g_cost, node);
 	}
+
+    nodesSearched++;
 
 	float min_exceeded_value = INFINITY;
 	// the player moves here
@@ -289,6 +287,6 @@ int IDAStar::evaluateState(std::shared_ptr<stateNode> node)
     coordinates player = node->player;
     int distance = std::abs(goal.x - player.x) + std::abs(goal.y - player.y);
 
-    return distance/2;
+    return distance/2; 
 }
 
